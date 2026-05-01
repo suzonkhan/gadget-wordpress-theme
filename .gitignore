@@ -1,0 +1,23 @@
+# Ignore everything
+/*
+
+# But allow this .gitignore file
+!.gitignore
+
+# Allow wp-content directory
+!wp-content/
+
+# Ignore everything inside wp-content
+wp-content/*
+
+# Allow themes directory
+!wp-content/themes/
+
+# Ignore all themes first
+wp-content/themes/*
+
+# Allow your active/custom theme
+!wp-content/themes/dimdul-gadget/
+
+# Allow all files inside your active/custom theme
+!wp-content/themes/dimdul-gadget/**
