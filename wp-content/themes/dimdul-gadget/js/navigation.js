@@ -126,4 +126,17 @@ jQuery(function ($) {
         lastScrollTop = st;
     });
 
+    // Fixed CTA
+    $(window).on('scroll', function() {
+        var stickyPoint = $('.product-cta-box').parent().offset().top + $('.product-cta-box').outerHeight();
+
+        if ($(window).scrollTop() > stickyPoint) {
+            $('.product-cta-box').addClass('is-sticky');
+        } else {
+            $('.product-cta-box').removeClass('is-sticky');
+        }
+    });
+
+
+
 });
