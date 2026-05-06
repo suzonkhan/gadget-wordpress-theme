@@ -249,6 +249,7 @@ h1, h2, h3, h4, h5 {
   gap: 14px;
   overflow-x: auto;
   padding-bottom: 8px;
+  width: 100%;
 }
 
 .products-grid .product-card {
@@ -269,23 +270,6 @@ h1, h2, h3, h4, h5 {
 @media (min-width: 1024px) {
   .products-grid {
     grid-template-columns: repeat(5, 1fr);
-  }
-}
-/* Trend grid */
-.trend-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-}
-
-@media (min-width: 768px) {
-  .trend-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-@media (min-width: 1024px) {
-  .trend-grid {
-    grid-template-columns: repeat(4, 1fr);
   }
 }
 /* Cat row → CSS grid on tablet+ */
@@ -445,6 +429,9 @@ table.variations td {
 .woocommerce-tabs ul.wc-tabs {
   display: flex;
   justify-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 .woocommerce-tabs ul.wc-tabs li {
   background: transparent !important;
@@ -457,10 +444,48 @@ table.variations td {
   background: var(--accent-light) !important;
   color: var(--accent) !important;
 }
+.woocommerce-tabs .woocommerce-Tabs-panel {
+  display: block !important;
+  margin-bottom: 40px;
+  padding-top: 20px;
+}
+
+/* Smooth scroll offset helper */
+.woocommerce-Tabs-panel {
+  scroll-margin-top: 90px;
+}
+
+.eg-product-faq-item {
+  border-bottom: 1px solid #d2d2d2;
+  padding: 8px 12px;
+}
+.eg-product-faq-item summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 17px;
+}
+.eg-product-faq-item .eg-product-faq-answer {
+  margin-top: 12px;
+}
+
+.woocommerce-noreviews {
+  padding: 8px 12px;
+  margin-bottom: 8px;
+}
 
 h2 {
   font-size: 22px !important;
   margin-bottom: 10px !important;
+}
+
+.wc-block-components-button {
+  background-color: var(--accent);
+  color: #FFFFFF;
+  border-radius: 4px;
+}
+
+.wp-block-woocommerce-checkout-order-summary-block {
+  background-color: #fff;
 }
 
 /*# sourceMappingURL=layout.css.map */

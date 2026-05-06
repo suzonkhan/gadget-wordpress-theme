@@ -102,6 +102,8 @@ function dimdul_gadget_setup() {
 }
 add_action( 'after_setup_theme', 'dimdul_gadget_setup' );
 
+add_filter('use_block_editor_for_post', '__return_false', 10);
+
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
  *
@@ -182,3 +184,6 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 if ( class_exists( 'WooCommerce' ) ) {
 	require get_template_directory() . '/inc/woocommerce.php';
 }
+
+// Add this line to your theme's functions.php
+//require_once get_template_directory() . '/inc/custom-checkout-fields.php';

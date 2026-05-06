@@ -252,6 +252,7 @@ h1, h2, h3, h4, h5 {
   gap: 14px;
   overflow-x: auto;
   padding-bottom: 8px;
+  width: 100%;
 }
 
 .products-grid .product-card {
@@ -274,25 +275,6 @@ h1, h2, h3, h4, h5 {
 @media (min-width: 1024px) {
   .products-grid {
     grid-template-columns:repeat(5, 1fr);
-  }
-}
-
-/* Trend grid */
-.trend-grid {
-  display: grid;
-  grid-template-columns:repeat(2, 1fr);
-  gap: 14px;
-}
-
-@media (min-width: 768px) {
-  .trend-grid {
-    grid-template-columns:repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .trend-grid {
-    grid-template-columns:repeat(4, 1fr);
   }
 }
 

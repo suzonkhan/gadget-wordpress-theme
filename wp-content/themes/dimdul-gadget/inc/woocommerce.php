@@ -291,3 +291,199 @@ function woocommerce_header_add_to_cart_fragment( $fragments ) {
 
     return $fragments;
 }
+
+/**
+ * Add Product FAQ tab inside WooCommerce product data panel.
+ */
+add_filter('woocommerce_product_data_tabs', 'eg_add_product_faq_tab');
+function eg_add_product_faq_tab($tabs) {
+    $tabs['eg_product_faq'] = array(
+            'label'    => __('Product FAQ', 'woocommerce'),
+            'target'   => 'eg_product_faq_data',
+            'class'    => array(),
+            'priority' => 80,
+    );
+
+    return $tabs;
+}
+
+/**
+ * Add FAQ fields inside the custom tab.
+ */
+add_action('woocommerce_product_data_panels', 'eg_add_product_faq_fields');
+function eg_add_product_faq_fields() {
+    global $post;
+
+    $faqs = get_post_meta($post->ID, '_eg_product_faqs', true);
+
+    if (!is_array($faqs)) {
+        $faqs = array();
+    }
+
+    ?>
+    <div id="eg_product_faq_data" class="panel woocommerce_options_panel hidden">
+        <div class="options_group">
+            <p class="form-field">
+                <strong><?php esc_html_e('Product FAQs', 'woocommerce'); ?></strong>
+            </p>
+
+            <div id="eg-faq-wrapper">
+                <?php
+                if (!empty($faqs)) :
+                    foreach ($faqs as $index => $faq) :
+                        $question = isset($faq['question']) ? $faq['question'] : '';
+                        $answer   = isset($faq['answer']) ? $faq['answer'] : '';
+                        ?>
+                        <div class="eg-faq-row" style="padding:15px; margin:10px 0; border:1px solid #ddd; background:#fff;">
+                            <p>
+                                <label><?php esc_html_e('Question', 'woocommerce'); ?></label>
+                                <input type="text" name="eg_product_faqs[<?php echo esc_attr($index); ?>][question]" value="<?php echo esc_attr($question); ?>" style="width:100%;" />
+                            </p>
+
+                            <p>
+                                <label><?php esc_html_e('Answer', 'woocommerce'); ?></label>
+                                <textarea name="eg_product_faqs[<?php echo esc_attr($index); ?>][answer]" rows="4" style="width:100%;"><?php echo esc_textarea($answer); ?></textarea>
+                            </p>
+
+                            <button type="button" class="button eg-remove-faq"><?php esc_html_e('Remove FAQ', 'woocommerce'); ?></button>
+                        </div>
+                    <?php
+                    endforeach;
+                endif;
+                ?>
+            </div>
+
+            <p>
+                <button type="button" class="button button-primary" id="eg-add-faq">
+                    <?php esc_html_e('Add FAQ', 'woocommerce'); ?>
+                </button>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        jQuery(function($) {
+            let faqIndex = $('#eg-faq-wrapper .eg-faq-row').length;
+
+            $('#eg-add-faq').on('click', function() {
+                let html = `
+                    <div class="eg-faq-row" style="padding:15px; margin:10px 0; border:1px solid #ddd; background:#fff;">
+                        <p>
+                            <label>Question</label>
+                            <input type="text" name="eg_product_faqs[` + faqIndex + `][question]" value="" style="width:100%;" />
+                        </p>
+
+                        <p>
+                            <label>Answer</label>
+                            <textarea name="eg_product_faqs[` + faqIndex + `][answer]" rows="4" style="width:100%;"></textarea>
+                        </p>
+
+                        <button type="button" class="button eg-remove-faq">Remove FAQ</button>
+                    </div>
+                `;
+
+                $('#eg-faq-wrapper').append(html);
+                faqIndex++;
+            });
+
+            $(document).on('click', '.eg-remove-faq', function() {
+                $(this).closest('.eg-faq-row').remove();
+            });
+        });
+    </script>
+    <?php
+}
+
+/**
+ * Save FAQ data.
+ */
+add_action('woocommerce_process_product_meta', 'eg_save_product_faq_fields');
+function eg_save_product_faq_fields($post_id) {
+    if (isset($_POST['eg_product_faqs']) && is_array($_POST['eg_product_faqs'])) {
+        $clean_faqs = array();
+
+        foreach ($_POST['eg_product_faqs'] as $faq) {
+            $question = isset($faq['question']) ? sanitize_text_field($faq['question']) : '';
+            $answer   = isset($faq['answer']) ? wp_kses_post($faq['answer']) : '';
+
+            if (!empty($question) || !empty($answer)) {
+                $clean_faqs[] = array(
+                        'question' => $question,
+                        'answer'   => $answer,
+                );
+            }
+        }
+
+        update_post_meta($post_id, '_eg_product_faqs', $clean_faqs);
+    } else {
+        delete_post_meta($post_id, '_eg_product_faqs');
+    }
+}
+
+/**
+ * Add FAQ as a WooCommerce product tab after Description.
+ */
+add_filter('woocommerce_product_tabs', 'eg_add_faq_product_tab');
+
+function eg_add_faq_product_tab($tabs) {
+    global $product;
+
+    if (!$product) {
+        return $tabs;
+    }
+
+    $faqs = get_post_meta($product->get_id(), '_eg_product_faqs', true);
+
+    if (empty($faqs) || !is_array($faqs)) {
+        return $tabs;
+    }
+
+    $tabs['eg_product_faq_tab'] = array(
+            'title'    => __('FAQ', 'woocommerce'),
+            'priority' => 15,
+            'callback' => 'eg_product_faq_tab_content',
+    );
+
+    return $tabs;
+}
+
+/**
+ * FAQ tab content.
+ */
+function eg_product_faq_tab_content() {
+    global $product;
+
+    if (!$product) {
+        return;
+    }
+
+    $faqs = get_post_meta($product->get_id(), '_eg_product_faqs', true);
+
+    if (empty($faqs) || !is_array($faqs)) {
+        return;
+    }
+
+    echo '<div class="eg-product-faq-tab-content">';
+    echo '<h2>Frequently Asked Questions</h2>';
+
+    foreach ($faqs as $faq) {
+        $question = isset($faq['question']) ? $faq['question'] : '';
+        $answer   = isset($faq['answer']) ? $faq['answer'] : '';
+
+        if (!empty($question) || !empty($answer)) {
+            echo '<details class="eg-product-faq-item">';
+            echo '<summary>' . esc_html($question) . '</summary>';
+            echo '<div class="eg-product-faq-answer">' . wpautop(wp_kses_post($answer)) . '</div>';
+            echo '</details>';
+        }
+    }
+
+    echo '</div>';
+}
+
+
+add_filter('woocommerce_add_to_cart_redirect', 'redirect_to_checkout_after_add_to_cart');
+
+function redirect_to_checkout_after_add_to_cart() {
+    return wc_get_checkout_url();
+}
