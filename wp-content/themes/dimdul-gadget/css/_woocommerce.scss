@@ -115,7 +115,7 @@ table.variations {
 }
 
 h2 {
-  font-size: 22px !important;
+  font-size: 28px !important;
   margin-bottom: 10px !important;
 }
 
@@ -127,4 +127,10 @@ h2 {
 
 .wp-block-woocommerce-checkout-order-summary-block {
   background-color: #fff;
+}
+
+.woocommerce-Tabs-panel {
+  background: #fff0f0;
+  padding: 10px !important;
+  border: 1px solid #ffdfdf;
 }

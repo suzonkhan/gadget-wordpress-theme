@@ -401,6 +401,19 @@ img {
 
 .site-header {
   background-color: #fff;
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+}
+.site-header.scroll-up {
+  transform: translateY(-100%);
+}
+.site-header.scroll-down {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .main-header-row {
@@ -560,7 +573,7 @@ table.variations td {
 }
 
 h2 {
-  font-size: 22px !important;
+  font-size: 28px !important;
   margin-bottom: 10px !important;
 }
 
@@ -572,6 +585,12 @@ h2 {
 
 .wp-block-woocommerce-checkout-order-summary-block {
   background-color: #fff;
+}
+
+.woocommerce-Tabs-panel {
+  background: #fff0f0;
+  padding: 10px !important;
+  border: 1px solid #ffdfdf;
 }
 
 /*# sourceMappingURL=layout.css.map */
