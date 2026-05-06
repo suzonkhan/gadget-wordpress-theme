@@ -49,9 +49,11 @@
                         the_custom_logo();
                         ?>
                     </div><!-- .site-branding -->
-                    <div class="search-bar">
-                        <input type="search" placeholder="Search products…"
-                               class="w-full rounded-md border border-gray-200 bg-white px-6 py-3 text-sm placeholder:text-gray-400 focus:border-gpOrange focus:outline-none"/>
+                    <div class="search-bar relative">
+                        <form role="search" method="get" class="woocommerce-product-search" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+                            <input type="search" id="woocommerce-product-search-field-<?php echo isset( $index ) ? absint( $index ) : 0; ?>" class="search-field w-full rounded-md border border-gray-200 bg-white px-6 py-3 text-sm placeholder:text-gray-400 focus:border-gpOrange focus:outline-none" placeholder="Search products…" value="<?php echo get_search_query(); ?>" name="s" />
+                            <input type="hidden" name="post_type" value="product" />
+                        </form>
                     </div>
                     <div class="flex items-center gap-4 flex-shrink-0">
                         <!-- Account -->

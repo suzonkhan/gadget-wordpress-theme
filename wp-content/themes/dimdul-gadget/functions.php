@@ -145,6 +145,12 @@ function dimdul_gadget_scripts() {
     wp_enqueue_style( 'dimdul-gadget-layout', get_template_directory_uri(). '/css/layout.css', array(), _S_VERSION );
 	wp_enqueue_script( 'dimdul-gadget-navigation', get_template_directory_uri() . '/js/navigation.js', array('jquery'), _S_VERSION, true );
 
+	// Localize script for AJAX
+	wp_localize_script( 'dimdul-gadget-navigation', 'ajax_object', array(
+		'ajax_url' => admin_url( 'admin-ajax.php' ),
+		'nonce'    => wp_create_nonce( 'product_search_nonce' ),
+	) );
+
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
@@ -187,3 +193,71 @@ if ( class_exists( 'WooCommerce' ) ) {
 
 // Add this line to your theme's functions.php
 //require_once get_template_directory() . '/inc/custom-checkout-fields.php';
+
+/**
+ * AJAX Product Search Handler
+ */
+function dimdul_gadget_product_search() {
+    // Verify nonce
+    if (!wp_verify_nonce($_POST['nonce'], 'product_search_nonce')) {
+        wp_die('Security check failed');
+    }
+
+    // Get search query
+    $query = sanitize_text_field($_POST['query']);
+    
+    if (empty($query)) {
+        wp_send_json_error('No search query provided');
+    }
+
+    // Search products
+    $args = array(
+        'post_type' => 'product',
+        'posts_per_page' => 8,
+        's' => $query,
+        'meta_query' => array(
+            'relation' => 'OR',
+            array(
+                'key' => '_sku',
+                'value' => $query,
+                'compare' => 'LIKE'
+            )
+        )
+    );
+
+    $products = new WP_Query($args);
+    
+    $html = '';
+    
+    if ($products->have_posts()) {
+        while ($products->have_posts()) {
+            $products->the_post();
+            global $product;
+            
+            $product_id = get_the_ID();
+            $product_title = get_the_title();
+            $product_url = get_permalink();
+            $product_price = $product->get_price_html();
+            $product_image = get_the_post_thumbnail_url($product_id, 'thumbnail') ?: wc_placeholder_img_src();
+            
+            $html .= '<div class="search-result-item" data-url="' . esc_url($product_url) . '">';
+            $html .= '<div class="search-result-image">';
+            $html .= '<img src="' . esc_url($product_image) . '" alt="' . esc_attr($product_title) . '">';
+            $html .= '</div>';
+            $html .= '<div class="search-result-content">';
+            $html .= '<h4 class="search-result-title">' . esc_html($product_title) . '</h4>';
+            $html .= '<div class="search-result-price">' . $product_price . '</div>';
+            $html .= '</div>';
+            $html .= '</div>';
+        }
+    } else {
+        $html = '<div class="search-no-results">No products found</div>';
+    }
+    
+    wp_reset_postdata();
+    
+    wp_send_json_success(array('html' => $html));
+}
+
+add_action('wp_ajax_product_search', 'dimdul_gadget_product_search');
+add_action('wp_ajax_nopriv_product_search', 'dimdul_gadget_product_search');
