@@ -499,42 +499,65 @@ img {
   width: 100% !important;
   float: none !important;
 }
-.single-product-main-information .product-page-right-sidebar {
-  background: url("../images/right-sidebar-shadow.png") no-repeat left center;
-}
-
-.product_title {
+.single-product-main-information div.summary .product_title {
   font-size: 24px;
   font-weight: 600;
   line-height: 1.4;
   margin-bottom: 1rem;
 }
 @media (max-width: 768px) {
-  .product_title {
+  .single-product-main-information div.summary .product_title {
     font-size: 18px;
   }
 }
-
-table.variations {
+.single-product-main-information div.summary .woocommerce-product-details__short-description {
+  margin: 1rem 0;
+}
+.single-product-main-information div.summary .quantity .qty {
+  width: 3.631em;
+  text-align: center;
+  padding: 6px;
+}
+.single-product-main-information div.summary .product_meta > span {
+  display: block;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-bottom: 1px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(to right, #eaeaea, #a0a0a0, #eaeaea);
+}
+.single-product-main-information div.summary .product_meta > span:last-child {
+  border-bottom: none;
+}
+.single-product-main-information div.summary table.variations {
   width: 100%;
   margin: 0;
   border: 1px solid #F5F5F5;
 }
-table.variations td {
+.single-product-main-information div.summary table.variations td {
   padding: 3px;
   border: 1px solid #F5F5F5;
+}
+.single-product-main-information .product-page-right-sidebar {
+  background: url("../images/right-sidebar-shadow.png") no-repeat left top;
+}
+
+.woocommerce span.onsale {
+  background-color: var(--accent);
 }
 
 .woocommerce-tabs ul.wc-tabs {
   display: flex;
   justify-content: center;
-  position: sticky;
   top: 0;
   z-index: 20;
+  background-color: #fff;
+  padding: 12px 0 !important;
 }
 .woocommerce-tabs ul.wc-tabs li {
   background: transparent !important;
   border: none !important;
+  border-radius: 4px !important;
 }
 .woocommerce-tabs ul.wc-tabs li::after, .woocommerce-tabs ul.wc-tabs li::before {
   display: none;
@@ -546,12 +569,10 @@ table.variations td {
 .woocommerce-tabs .woocommerce-Tabs-panel {
   display: block !important;
   margin-bottom: 40px;
-  padding-top: 20px;
-}
-
-/* Smooth scroll offset helper */
-.woocommerce-Tabs-panel {
   scroll-margin-top: 90px;
+  background: #ffffff;
+  padding: 24px !important;
+  border: 1px solid #ffdfdf;
 }
 
 .eg-product-faq-item {
@@ -587,10 +608,53 @@ h2 {
   background-color: #fff;
 }
 
-.woocommerce-Tabs-panel {
-  background: #fff0f0;
-  padding: 10px !important;
+.woocommerce:where(body:not(.woocommerce-block-theme-has-button-styles)) a.button.alt,
+.woocommerce:where(body:not(.woocommerce-block-theme-has-button-styles)) button.button.alt,
+.woocommerce:where(body:not(.woocommerce-block-theme-has-button-styles)) input.button.alt,
+.woocommerce:where(body:not(.woocommerce-block-theme-has-button-styles)) #respond input#submit.alt,
+:where(body:not(.woocommerce-block-theme-has-button-styles)):where(:not(.edit-post-visual-editor)) .woocommerce a.button.alt,
+:where(body:not(.woocommerce-block-theme-has-button-styles)):where(:not(.edit-post-visual-editor)) .woocommerce button.button.alt,
+:where(body:not(.woocommerce-block-theme-has-button-styles)):where(:not(.edit-post-visual-editor)) .woocommerce input.button.alt,
+:where(body:not(.woocommerce-block-theme-has-button-styles)):where(:not(.edit-post-visual-editor)) .woocommerce #respond input#submit.alt {
+  background-color: var(--accent);
+  color: #FFFFFF;
+  border-radius: 4px;
+}
+
+.woocommerce-form {
+  background: #fff;
+}
+
+.product-cta-box {
+  background-color: #fff;
   border: 1px solid #ffdfdf;
+  padding: 12px;
+  gap: 12px;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  bottom: 0;
+}
+.product-cta-box > div.product-cta-thumb {
+  flex: 0 0 60px;
+}
+.product-cta-box > div .product-cta-title {
+  font: 600 18px/1.4 "Poppins", sans-serif;
+}
+.product-cta-box > div.product-cta-button {
+  margin-left: auto;
+}
+.product-cta-box > div.product-cta-button form.cart {
+  margin-bottom: 0;
+}
+.product-cta-box > div.product-cta-button .quantity .qty {
+  height: 48px;
+  border: 1px solid #dedede;
+  border-radius: 4px;
+  font-size: 20px;
+}
+.product-cta-box > div.product-cta-button .button {
+  padding: 16px 39px;
 }
 
 /*# sourceMappingURL=layout.css.map */
