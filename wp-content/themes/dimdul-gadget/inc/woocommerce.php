@@ -541,26 +541,31 @@ function custom_wc_product_cta_shortcode($atts)
     $product = wc_get_product($atts['id']);
 
     ?>
-    <div class="product-cta-box">
-        <div class="product-cta-thumb">
-            <?php echo $product->get_image('thumbnail'); ?>
-        </div>
-        <div class="product-cta-info">
-            <h3 class="product-cta-title">
-                <?php echo $product->get_name(); ?>
-            </h3>
-            <div class="product-cta-price">
-                <?php echo $product->get_price_html(); ?>
+        <div class="product-cta-wrapper">
+            <div class="container">
+                <div class="product-cta-box">
+                    <div class="product-cta-thumb">
+                        <?php echo $product->get_image('thumbnail'); ?>
+                    </div>
+                    <div class="product-cta-info">
+                        <h3 class="product-cta-title">
+                            <?php echo $product->get_name(); ?>
+                        </h3>
+                        <div class="product-cta-price">
+                            <?php echo $product->get_price_html(); ?>
+                        </div>
+                    </div>
+
+                    <div class="product-cta-button">
+                        <?php
+                        // This triggers the standard "Add to Cart" button and quantity input
+                        woocommerce_template_single_add_to_cart();
+                        ?>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="product-cta-button">
-            <?php
-            // This triggers the standard "Add to Cart" button and quantity input
-            woocommerce_template_single_add_to_cart();
-            ?>
-        </div>
-    </div>
     <?php
 
     // Restore the original global product to prevent breaking the rest of the page

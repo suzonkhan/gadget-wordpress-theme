@@ -128,12 +128,12 @@ jQuery(function ($) {
 
     // Fixed CTA
     $(window).on('scroll', function() {
-        var stickyPoint = $('.product-cta-box').parent().offset().top + $('.product-cta-box').outerHeight();
+        var stickyPoint = $('.product-cta-wrapper').parent().offset().top + $('.product-cta-wrapper').outerHeight();
 
         if ($(window).scrollTop() > stickyPoint) {
-            $('.product-cta-box').addClass('is-sticky');
+            $('.product-cta-wrapper').addClass('is-sticky');
         } else {
-            $('.product-cta-box').removeClass('is-sticky');
+            $('.product-cta-wrapper').removeClass('is-sticky');
         }
     });
 
