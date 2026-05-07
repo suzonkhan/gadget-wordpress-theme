@@ -105,12 +105,15 @@ while (have_posts()) : ?>
 
             </div>
             <div class="text-center product-page-right-sidebar">
-                <img class="mx-auto mb-3" src="<?php echo get_template_directory_uri(); ?>/images/brand.png"
-                     alt="Brand Logo">
-                <img class="mx-auto mb-3" src="<?php echo get_template_directory_uri(); ?>/images/free-shipping.png"
-                     alt="Brand Logo">
-                <img class="mx-auto mb-3" src="<?php echo get_template_directory_uri(); ?>/images/warranty.png"
-                     alt="Brand Logo">
+                <div class=""><img class="mx-auto mb-3"
+                                   src="<?php echo get_template_directory_uri(); ?>/images/brand.png"
+                                   alt="Brand Logo"></div>
+                <div class=""><img class="mx-auto mb-3"
+                                   src="<?php echo get_template_directory_uri(); ?>/images/free-shipping.png"
+                                   alt="Brand Logo"></div>
+                <div class=""><img class="mx-auto mb-3"
+                                   src="<?php echo get_template_directory_uri(); ?>/images/warranty.png"
+                                   alt="Brand Logo"></div>
             </div>
 
         </div>

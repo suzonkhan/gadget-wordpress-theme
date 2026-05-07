@@ -194,7 +194,7 @@
 
 .product-cta-wrapper {
   background-color: #fff;
-  padding: 12px;
+  padding: 12px 0;
   box-sizing: border-box;
   border: 1px solid #e5e7eb;
   @keyframes stickyUP {
@@ -215,6 +215,13 @@
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     animation: stickyUP 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   }
+
+  @media screen and (max-width: 600px) {
+    padding: 8px 0;
+    .container {
+      padding: 0 8px;
+    }
+  }
 }
 
 .product-cta-box {
@@ -227,10 +234,18 @@
     //flex: 1;
     &.product-cta-thumb {
       flex: 0 0 60px;
+      width: 60px;
+      @media screen and (max-width: 600px) {
+        flex: 0 0 40px;
+        width: 40px;
+      }
     }
 
     .product-cta-title {
       font: 600 18px/1.4 "Poppins", sans-serif;
+      @media screen and (max-width: 600px) {
+        font-size: 14px;
+      }
     }
 
     &.product-cta-button {
@@ -245,13 +260,25 @@
         border: 1px solid #dedede;
         border-radius: 4px;
         font-size: 20px;
+        @media screen and (max-width: 767px) {
+          display: none;
+        }
       }
 
       .button {
         padding: 16px 39px;
+        @media screen and (max-width: 767px) {
+          padding: 12px 12px;
+          font-size: 14px;
+        }
       }
     }
 
+    .product-cta-price {
+      @media screen and (max-width: 600px) {
+        font-size: 12px;
+      }
+    }
   }
 }
 
@@ -267,6 +294,29 @@ body.woocommerce-checkout {
 
     .wp-block-woocommerce-checkout {
       padding-top: 0;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .woocommerce-breadcrumb {
+    display: none;
+  }
+  .product-page-right-sidebar {
+    background: transparent !important;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    //gap: 4px;
+
+    & > div {
+      padding: 8px;
+      border: 1px solid #e5e7eb;
+      //background-color: #fff;
+    }
+  }
+  .woocommerce {
+    h2 {
+      font-size: 18px;
     }
   }
 }

@@ -141,9 +141,8 @@ add_action( 'widgets_init', 'dimdul_gadget_widgets_init' );
  */
 function dimdul_gadget_scripts() {
 	wp_enqueue_style( 'dimdul-gadget-style', get_stylesheet_uri(), array(), _S_VERSION );
-	wp_style_add_data( 'dimdul-gadget-style', 'rtl', 'replace' );
-    wp_enqueue_style( 'dimdul-tailwind-style', get_template_directory_uri(). '/css/tailwind.css', array(), _S_VERSION );
-    wp_enqueue_style( 'dimdul-gadget-layout', get_template_directory_uri(). '/css/layout.css', array(), _S_VERSION );
+    wp_enqueue_style( 'dimdul-tailwind-style', get_template_directory_uri(). '/css/tailwind.css');
+    wp_enqueue_style( 'dimdul-gadget-layout', get_template_directory_uri(). '/css/layout.css');
 	wp_enqueue_script( 'dimdul-gadget-navigation', get_template_directory_uri() . '/js/navigation.js', array('jquery'), _S_VERSION, true );
 
 	// Localize script for AJAX
