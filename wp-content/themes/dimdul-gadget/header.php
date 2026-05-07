@@ -16,7 +16,7 @@
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="profile" href="https://gmpg.org/xfn/11">
-    <script src="https://cdn.tailwindcss.com"></script>
+<!--    <script src="https://cdn.tailwindcss.com"></script>-->
     <?php wp_head(); ?>
 </head>
 
@@ -62,7 +62,7 @@
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                             </svg>
-                            <div class="flex flex-col gap-[2px]">
+                            <div class=" flex-col gap-[2px] hidden lg:flex">
                                 <span class="text-xs mt-1 font-semibold">MY ACCOUNT</span>
                                 <span class="text-xs">Login / Create</span>
                             </div>
@@ -76,7 +76,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                                 </svg>
 
-                                <div class="flex flex-col gap-[2px]">
+                                <div class="flex flex-col gap-[2px] hidden lg:flex">
                                         <span class="text-xs mt-1 font-semibold">
                                             <?php
                                             echo sprintf(
@@ -93,7 +93,7 @@
 
                                     <span class="text-xs">
                                             <?php echo WC()->cart->get_cart_total(); ?>
-                                        </span>
+                                    </span>
                                 </div>
                             </div>
                         </a>

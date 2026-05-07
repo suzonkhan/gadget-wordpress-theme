@@ -21,3 +21,6 @@ wp-content/themes/*
 
 # Allow all files inside your active/custom theme
 !wp-content/themes/dimdul-gadget/**
+
+# Ignore Node.js dependencies
+node_modules/

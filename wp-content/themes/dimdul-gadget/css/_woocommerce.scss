@@ -154,10 +154,6 @@
   margin-bottom: 8px;
 }
 
-h2 {
-  font-size: 28px !important;
-  margin-bottom: 10px !important;
-}
 
 .wc-block-components-button {
   background-color: var(--accent);
@@ -166,7 +162,9 @@ h2 {
 }
 
 .wp-block-woocommerce-checkout-order-summary-block {
-  background-color: #fff;
+  @media screen and (min-width: 732px) {
+    background-color: #fff;
+  }
 }
 
 
@@ -254,5 +252,21 @@ h2 {
       }
     }
 
+  }
+}
+
+body.woocommerce-checkout {
+
+  @media screen and (max-width: 767px) {
+    .wc-block-checkout__contact-fields {
+      display: none;
+    }
+    .entry-header {
+      display: none;
+    }
+
+    .wp-block-woocommerce-checkout {
+      padding-top: 0;
+    }
   }
 }

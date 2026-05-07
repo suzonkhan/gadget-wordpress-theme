@@ -575,3 +575,12 @@ function custom_wc_product_cta_shortcode($atts)
 }
 
 add_shortcode('product_cta', 'custom_wc_product_cta_shortcode');
+
+// Change WooCommerce "Add to cart" button text to "Buy Now"
+
+add_filter( 'woocommerce_product_single_add_to_cart_text', 'dimdul_change_add_to_cart_text' );
+add_filter( 'woocommerce_product_add_to_cart_text', 'dimdul_change_add_to_cart_text' );
+
+function dimdul_change_add_to_cart_text() {
+    return __( 'Buy Now', 'dimdul-gadget' );
+}

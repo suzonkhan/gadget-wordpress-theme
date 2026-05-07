@@ -8,14 +8,8 @@
   --sidebar-w: 220px;
 }
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 html {
- scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -105,6 +99,20 @@ h1, h2, h3, h4, h5 {
 
 .product-card {
   transition: transform .2s ease, box-shadow .2s ease;
+
+  a.add_to_cart_button {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: #fef2f2;
+    color: var(--accent);
+    transition: background .15s, color .15s;
+
+    &:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+  }
 }
 
 .product-card:hover {
@@ -333,36 +341,38 @@ h1, h2, h3, h4, h5 {
 }
 
 /* Deals row: scroll on mobile, grid on tablet/desktop */
+
+
+@media (max-width: 768px) {
+  body.home {
+    .products-grid {
+      display: flex;
+      padding-bottom: 8px;
+      overflow-x: auto;
+    }
+
+    .products-grid .product-card {
+      flex-shrink: 0;
+      width: 155px;
+    }
+  }
+
+}
+
 .products-grid {
-  display: flex;
-  gap: 14px;
-  overflow-x: auto;
-  padding-bottom: 8px;
+  display: grid;
+  grid-template-columns:repeat(auto-fit, minmax(135px, 1fr));
+  overflow: visible;
   width: 100%;
-}
-
-.products-grid .product-card {
-  flex-shrink: 0;
-  width: 155px;
-}
-
-@media (min-width: 768px) {
-  .products-grid {
-    display: grid;
-    grid-template-columns:repeat(3, 1fr);
-    overflow: visible;
-  }
-
-  .products-grid .product-card {
-    width: auto;
-  }
-}
-
-@media (min-width: 1024px) {
-  .products-grid {
+  gap: 14px;
+  @media (min-width: 1024px) {
     grid-template-columns:repeat(5, 1fr);
   }
+  @media screen and (max-width: 600px) {
+    grid-template-columns:repeat(2, 1fr);
+  }
 }
+
 
 /* Cat row → CSS grid on tablet+ */
 @media (min-width: 768px) {
@@ -378,26 +388,6 @@ h1, h2, h3, h4, h5 {
   }
 }
 
-/* Hero heights */
-@media (min-width: 768px) {
-  .hero-main {
-    height: 300px !important;
-  }
-
-  .hero-small {
-    height: 148px !important;
-  }
-}
-
-@media (min-width: 1024px) {
-  .hero-main {
-    height: 390px !important;
-  }
-
-  .hero-small {
-    height: 191px !important;
-  }
-}
 
 @import "header";
 @import "woocommerce";
