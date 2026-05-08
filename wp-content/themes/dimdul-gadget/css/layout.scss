@@ -388,6 +388,10 @@ h1, h2, h3, h4, h5 {
   }
 }
 
+.d-none {
+  display: none;
+}
 
 @import "header";
 @import "woocommerce";
+@import "landing-page";

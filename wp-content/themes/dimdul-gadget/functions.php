@@ -102,7 +102,7 @@ function dimdul_gadget_setup() {
 }
 add_action( 'after_setup_theme', 'dimdul_gadget_setup' );
 
-add_filter('use_block_editor_for_post', '__return_false', 10);
+//add_filter('use_block_editor_for_post', '__return_false', 10);
 
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
@@ -127,8 +127,8 @@ function dimdul_gadget_widgets_init() {
 			'name'          => esc_html__( 'Sidebar', 'dimdul-gadget' ),
 			'id'            => 'sidebar-1',
 			'description'   => esc_html__( 'Add widgets here.', 'dimdul-gadget' ),
-			'before_widget' => '<section id="%1$s" class="widget %2$s">',
-			'after_widget'  => '</section>',
+			'before_widget' => '<div id="%1$s" class="widget %2$s">',
+			'after_widget'  => '</div>',
 			'before_title'  => '<h2 class="widget-title">',
 			'after_title'   => '</h2>',
 		)

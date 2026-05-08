@@ -603,3 +603,70 @@ function dimdul_loop_add_to_cart_text( $text, $product ) {
     // Variable, grouped, external, etc.
     return __( 'Details', 'dimdul-gadget' );
 }
+
+
+add_filter( 'woocommerce_checkout_fields' , 'custom_reorder_and_minimize_checkout_fields' );
+
+function custom_reorder_and_minimize_checkout_fields( $fields ) {
+    // 1. Define the fields we want to keep and their new order/properties
+    $keep_fields = array(
+            'billing_first_name' => array(
+                    'label'       => 'নাম',
+                    'placeholder' => '',
+                    'priority'    => 10,
+                    'class'       => array('form-row-wide'),
+                    'required'    => true
+            ),
+            'billing_phone' => array(
+                    'label'       => 'মোবাইল নম্বর',
+                    'placeholder' => '',
+                    'priority'    => 20,
+                    'class'       => array('form-row-wide'),
+                    'required'    => true
+            ),
+            'billing_email' => array(
+                    'label'       => 'ইমেল',
+                    'placeholder' => '',
+                    'priority'    => 30,
+                    'class'       => array('form-row-wide'),
+                    'required'    => false // Email is now optional
+            ),
+            'billing_country' => array(
+                    'type'        => 'hidden',
+                    'label'       => 'দেশ',
+                    'placeholder' => '',
+                    'priority'    => 30,
+                    'class'       => array('form-row-wide'),
+                    'default'     => 'BD',
+                    'required'    => false // Email is now optional
+            ),
+            'billing_address_1' => array(
+                    'type'        => 'textarea', // Changed from default to textarea
+                    'label'       => 'পূর্ণ ঠিকানা',
+                    'placeholder' => 'আপনার সম্পূর্ণ ঠিকানা এখানে লিখুন...',
+                    'priority'    => 40,
+                    'class'       => array('form-row-wide'),
+                    'required'    => true,
+                    'custom_attributes' => array('rows' => 3) // Controls the height
+            )
+    );
+
+    // 2. Clear out all existing billing fields
+    $fields['billing'] = array();
+
+    // 3. Re-insert only our allowed fields with the custom settings
+    foreach ( $keep_fields as $key => $props ) {
+        $fields['billing'][$key] = $props;
+    }
+
+    // 4. Remove the Order Notes if you don't need them
+    unset($fields['order']['order_comments']);
+
+    return $fields;
+}
+// 3. Force the country value to BD during the checkout process
+//add_action('woocommerce_checkout_update_order_review', function($post_data) {
+//    parse_str($post_data, $post_data_array);
+//    $post_data_array['billing_country'] = 'BD';
+//    $post_data_array['shipping_country'] = 'BD';
+//});

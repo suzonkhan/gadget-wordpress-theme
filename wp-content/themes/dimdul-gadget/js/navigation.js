@@ -1,4 +1,5 @@
 jQuery(function ($) {
+
     // AJAX Product Search - This should always run regardless of tabs
     const $searchInput = $('.search-bar .search-field');
     let searchTimeout;
@@ -127,7 +128,7 @@ jQuery(function ($) {
     });
 
     // Fixed CTA
-    $(window).on('scroll', function() {
+    $(window).on('scroll', function () {
         var stickyPoint = $('.product-cta-wrapper').parent().offset().top + $('.product-cta-wrapper').outerHeight();
 
         if ($(window).scrollTop() > stickyPoint) {
@@ -138,5 +139,24 @@ jQuery(function ($) {
     });
 
 
+// Function to apply colspan
+    function adjustShippingColspan() {
+        const $shippingTd = $('.woocommerce-checkout-review-order-table tr.woocommerce-shipping-totals td');
 
+        if ($shippingTd.length) {
+            $shippingTd.attr('colspan', '2');
+        }
+    }
+
+    // Run on initial load
+    adjustShippingColspan();
+
+    // WooCommerce updates the checkout fragments via AJAX
+    // This ensures the colspan persists after address/shipping changes
+    $(document.body).on('updated_checkout', function () {
+        adjustShippingColspan();
+    });
+
+
+   
 });
