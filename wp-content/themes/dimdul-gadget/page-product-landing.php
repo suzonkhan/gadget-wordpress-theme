@@ -351,24 +351,24 @@ add_filter('woocommerce_get_checkout_url', function($url) {
 
                 </div>
                 <!-- Trust Badges -->
-                <div class="trust-badges grid grid-cols-3 gap-4 mb-8">
+                <div class="trust-badges">
                     <div class="text-center">
                         <img src="<?php echo esc_url(get_template_directory_uri()); ?>/images/brand.png"
                              alt="<?php esc_attr_e('Brand', 'dimdul-gadget'); ?>"
                              class="mx-auto mb-2 h-12 object-contain">
-                        <p class="text-xs text-gray-600"><?php esc_html_e('Official Brand', 'dimdul-gadget'); ?></p>
+
                     </div>
                     <div class="text-center">
                         <img src="<?php echo esc_url(get_template_directory_uri()); ?>/images/free-shipping.png"
                              alt="<?php esc_attr_e('Free Shipping', 'dimdul-gadget'); ?>"
                              class="mx-auto mb-2 h-12 object-contain">
-                        <p class="text-xs text-gray-600"><?php esc_html_e('Free Shipping', 'dimdul-gadget'); ?></p>
+
                     </div>
                     <div class="text-center">
                         <img src="<?php echo esc_url(get_template_directory_uri()); ?>/images/warranty.png"
                              alt="<?php esc_attr_e('Warranty', 'dimdul-gadget'); ?>"
                              class="mx-auto mb-2 h-12 object-contain">
-                        <p class="text-xs text-gray-600"><?php esc_html_e('Warranty', 'dimdul-gadget'); ?></p>
+
                     </div>
                 </div>
             </div>
@@ -376,44 +376,92 @@ add_filter('woocommerce_get_checkout_url', function($url) {
         </div>
 
         <!-- Checkout Section -->
-        <div class="checkout-section bg-gray-50 py-12">
-            <div class="container mx-auto px-4">
-                <div class="max-w-4xl mx-auto">
-                    <h2 class="text-2xl font-bold text-center mb-8"><?php esc_html_e('Complete Your Purchase', 'dimdul-gadget'); ?></h2>
-                    
-                    <div class="bg-white rounded-lg shadow-lg p-6 lg:p-8">
+        <section class="checkout-section py-12">
+            <div class="container">
+                <div class="">
+                    <div class="bg-white p-6  border border-gray-200 mb-8">
+                        <h2 class="text-2xl font-bold text-center "><?php esc_html_e('Complete Your Purchase', 'dimdul-gadget'); ?></h2>
+                    </div>
+
+                    <div class="">
                         <?php echo do_shortcode('[woocommerce_checkout]'); ?>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- Product Description Section -->
         <?php if ($product->get_description()): ?>
-            <div class="description-section py-12">
-                <div class="container mx-auto px-4">
-                    <div class="max-w-4xl mx-auto">
+            <section class="description-section  py-12">
+                <div class="container bg-white  border border-gray-200">
+                    <div class="p-6">
                         <h2 class="text-2xl font-bold text-center mb-8"><?php esc_html_e('Product Description', 'woocommerce'); ?></h2>
                         <div class="prose prose-lg max-w-none">
                             <?php echo wp_kses_post($product->get_description()); ?>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
         <?php endif; ?>
 
-        <!-- Product CTA Section -->
-        <?php
-        // Use the existing product-cta shortcode if available
-        if (function_exists('custom_wc_product_cta_shortcode') && $product && !$product->is_type('variable')):
-            echo do_shortcode('[product_cta id="' . $product_id . '"]');
-        endif;
-        ?>
+        <!-- TRUST BADGES -->
+        <section class="bg-white rounded-2xl py-5 slide-up border border-gray-200 border-y d5">
+            <div class="container">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-5 text-center">
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-red-600" fill="none"
+                                 viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                            </svg>
+                        </div>
+                        <div><p class="font-bold text-sm" style="font-family:'Syne',sans-serif;">Free Shipping</p>
+                            <p class="text-xs text-gray-400">On orders over $99</p></div>
+                    </div>
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-red-600" fill="none"
+                                 viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                            </svg>
+                        </div>
+                        <div><p class="font-bold text-sm" style="font-family:'Syne',sans-serif;">Free Returns</p>
+                            <p class="text-xs text-gray-400">30-day return policy</p></div>
+                    </div>
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-red-600" fill="none"
+                                 viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                        </div>
+                        <div><p class="font-bold text-sm" style="font-family:'Syne',sans-serif;">Secure Payments</p>
+                            <p class="text-xs text-gray-400">SSL encrypted checkout</p></div>
+                    </div>
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-red-600" fill="none"
+                                 viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
+                            </svg>
+                        </div>
+                        <div><p class="font-bold text-sm" style="font-family:'Syne',sans-serif;">24/7 Support</p>
+                            <p class="text-xs text-gray-400">Always here to help</p></div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
 
         <!-- Reviews Section -->
-        <div class="reviews-section bg-gray-50 py-12">
-            <div class="container mx-auto px-4">
-                <div class="max-w-4xl mx-auto">
+        <div class="reviews-section py-12">
+            <div class="container bg-white border border-gray-200">
+                <div class="p-6">
                     <h2 class="text-2xl font-bold text-center mb-8"><?php esc_html_e('Customer Reviews', 'woocommerce'); ?></h2>
 
                     <?php
@@ -470,9 +518,9 @@ add_filter('woocommerce_get_checkout_url', function($url) {
         $faqs = get_post_meta($product_id, '_eg_product_faqs', true);
         if (!empty($faqs) && is_array($faqs)):
         ?>
-            <div class="faq-section py-12">
-                <div class="container mx-auto px-4">
-                    <div class="max-w-4xl mx-auto">
+            <section class="faq-section">
+                <div class="container bg-white border border-gray-200">
+                    <div class="p-6">
                         <h2 class="text-2xl font-bold text-center mb-8"><?php esc_html_e('Frequently Asked Questions', 'dimdul-gadget'); ?></h2>
 
                         <?php
@@ -483,7 +531,7 @@ add_filter('woocommerce_get_checkout_url', function($url) {
                             if (!empty($question) || !empty($answer)):
                         ?>
                             <div class="faq-item bg-white rounded-lg p-6 mb-4 shadow">
-                                <h3 class="font-semibold mb-2"><?php echo esc_html($question); ?></h3>
+                                <h3 class="font-semibold text-lg mb-2"><?php echo esc_html($question); ?></h3>
                                 <div class="text-gray-700">
                                     <?php echo wp_kses_post(wpautop($answer)); ?>
                                 </div>
@@ -494,39 +542,12 @@ add_filter('woocommerce_get_checkout_url', function($url) {
                         ?>
                     </div>
                 </div>
-            </div>
+            </section>
         <?php
         endif;
         ?>
 
-        <!-- Benefits Section -->
-        <div class="benefits-section bg-gray-50 py-12">
-            <div class="container mx-auto px-4">
-                <div class="max-w-4xl mx-auto">
-                    <h2 class="text-2xl font-bold text-center mb-8"><?php esc_html_e('Why Choose Us', 'dimdul-gadget'); ?></h2>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="benefit-card bg-white rounded-lg p-6 text-center shadow">
-                            <div class="text-3xl mb-4">🚚</div>
-                            <h3 class="font-semibold mb-2"><?php esc_html_e('Fast Shipping', 'dimdul-gadget'); ?></h3>
-                            <p class="text-gray-700"><?php esc_html_e('Quick delivery to your doorstep with tracking available.', 'dimdul-gadget'); ?></p>
-                        </div>
-
-                        <div class="benefit-card bg-white rounded-lg p-6 text-center shadow">
-                            <div class="text-3xl mb-4">✓</div>
-                            <h3 class="font-semibold mb-2"><?php esc_html_e('Quality Guarantee', 'dimdul-gadget'); ?></h3>
-                            <p class="text-gray-700"><?php esc_html_e('All products are tested for quality and authenticity.', 'dimdul-gadget'); ?></p>
-                        </div>
-
-                        <div class="benefit-card bg-white rounded-lg p-6 text-center shadow">
-                            <div class="text-3xl mb-4">🔒</div>
-                            <h3 class="font-semibold mb-2"><?php esc_html_e('Secure Shopping', 'dimdul-gadget'); ?></h3>
-                            <p class="text-gray-700"><?php esc_html_e('Safe and secure checkout process with multiple payment options.', 'dimdul-gadget'); ?></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </main>
 
 <?php
