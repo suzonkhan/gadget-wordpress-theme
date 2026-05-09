@@ -670,3 +670,66 @@ function custom_reorder_and_minimize_checkout_fields( $fields ) {
 //    $post_data_array['billing_country'] = 'BD';
 //    $post_data_array['shipping_country'] = 'BD';
 //});
+
+/**
+ * AJAX handler for getting variation data
+ */
+function dimdul_gadget_get_variation_data() {
+    check_ajax_referer('add_to_cart_nonce', 'nonce');
+    
+    $product_id = intval($_POST['product_id']);
+    $variations = $_POST['variations'];
+    
+    $product = wc_get_product($product_id);
+    
+    if (!$product || !$product->is_type('variable')) {
+        wp_send_json_error(array('message' => 'Invalid product'));
+    }
+    
+    $data_store = WC_Data_Store::load('product-variation');
+    $matching_variations = $data_store->find_matching_variations($product, $variations);
+    
+    if (empty($matching_variations)) {
+        wp_send_json_error(array('message' => 'No matching variation found'));
+    }
+    
+    $variation_id = $matching_variations[0];
+    $variation = wc_get_product($variation_id);
+    
+    if (!$variation) {
+        wp_send_json_error(array('message' => 'Variation not found'));
+    }
+    
+    $response = array(
+        'variation_id' => $variation_id,
+        'price' => $variation->get_price_html(),
+        'regular_price' => wc_price($variation->get_regular_price()),
+        'stock_status' => $variation->is_in_stock() ? __('In stock', 'woocommerce') : __('Out of stock', 'woocommerce'),
+        'is_in_stock' => $variation->is_in_stock(),
+        'is_purchasable' => $variation->is_purchasable(),
+        'max_quantity' => $variation->get_max_purchase_quantity(),
+        'attributes' => $variation->get_attributes()
+    );
+    
+    wp_send_json_success($response);
+}
+
+add_action('wp_ajax_get_variation_data', 'dimdul_gadget_get_variation_data');
+add_action('wp_ajax_nopriv_get_variation_data', 'dimdul_gadget_get_variation_data');
+
+/**
+ * Enqueue scripts and localize AJAX variables for landing page
+ */
+function dimdul_gadget_enqueue_landing_scripts() {
+    // Only enqueue on landing page template
+    if (is_page_template('page-product-landing.php')) {
+        wp_enqueue_script('landing-page-js', get_template_directory_uri() . '/js/landing-page.js', array('jquery'), _S_VERSION, true);
+        
+        wp_localize_script('landing-page-js', 'landing_ajax', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce_add_to_cart' => wp_create_nonce('add_to_cart_nonce')
+        ));
+    }
+}
+
+add_action('wp_enqueue_scripts', 'dimdul_gadget_enqueue_landing_scripts');

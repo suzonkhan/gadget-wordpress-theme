@@ -145,7 +145,7 @@ get_header();
         <!-- TRUST BADGES -->
         <section class="bg-white rounded-2xl py-5 slide-up border border-gray-200 border-y d5">
             <div class="container">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-5 text-center">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-center">
                     <div class="flex flex-col items-center gap-2">
                         <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-red-600" fill="none"
@@ -268,26 +268,26 @@ get_header();
                             Now</h2></div>
                     <a href="#" class="text-xs font-semibold text-red-600 underline underline-offset-2">See All</a>
                 </div>
-                <div class="flex flex-wrap gap-2 mb-4">
-                    <button class="cat-pill text-xs font-semibold px-4 py-1.5 rounded-full border border-red-600 bg-red-600 text-white active">
-                        All
-                    </button>
-                    <button class="cat-pill text-xs font-semibold px-4 py-1.5 rounded-full border border-gray-200 text-gray-600 bg-white">
-                        Phones
-                    </button>
-                    <button class="cat-pill text-xs font-semibold px-4 py-1.5 rounded-full border border-gray-200 text-gray-600 bg-white">
-                        Audio
-                    </button>
-                    <button class="cat-pill text-xs font-semibold px-4 py-1.5 rounded-full border border-gray-200 text-gray-600 bg-white">
-                        Wearables
-                    </button>
-                    <button class="cat-pill text-xs font-semibold px-4 py-1.5 rounded-full border border-gray-200 text-gray-600 bg-white">
-                        Laptops
-                    </button>
-                    <button class="cat-pill text-xs font-semibold px-4 py-1.5 rounded-full border border-gray-200 text-gray-600 bg-white">
-                        Cameras
-                    </button>
-                </div>
+<!--                <div class="flex flex-wrap gap-2 mb-4">-->
+<!--                    <button class="cat-pill text-xs font-semibold px-4 py-1.5 rounded-full border border-red-600 bg-red-600 text-white active">-->
+<!--                        All-->
+<!--                    </button>-->
+<!--                    <button class="cat-pill text-xs font-semibold px-4 py-1.5 rounded-full border border-gray-200 text-gray-600 bg-white">-->
+<!--                        Phones-->
+<!--                    </button>-->
+<!--                    <button class="cat-pill text-xs font-semibold px-4 py-1.5 rounded-full border border-gray-200 text-gray-600 bg-white">-->
+<!--                        Audio-->
+<!--                    </button>-->
+<!--                    <button class="cat-pill text-xs font-semibold px-4 py-1.5 rounded-full border border-gray-200 text-gray-600 bg-white">-->
+<!--                        Wearables-->
+<!--                    </button>-->
+<!--                    <button class="cat-pill text-xs font-semibold px-4 py-1.5 rounded-full border border-gray-200 text-gray-600 bg-white">-->
+<!--                        Laptops-->
+<!--                    </button>-->
+<!--                    <button class="cat-pill text-xs font-semibold px-4 py-1.5 rounded-full border border-gray-200 text-gray-600 bg-white">-->
+<!--                        Cameras-->
+<!--                    </button>-->
+<!--                </div>-->
                 <?php echo do_shortcode('[products limit="10" columns="5" best_selling="true" ]'); ?>
             </div>
 

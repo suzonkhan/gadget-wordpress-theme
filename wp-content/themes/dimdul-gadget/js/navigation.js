@@ -1,5 +1,49 @@
 jQuery(function ($) {
+    const $toggle  = $('#drawer-toggle');
+    const $drawer  = $('#mobile-menu-container');
+    const $overlay = $('#drawer-overlay');
+    const $drawerClose = $('#drawer-close');
 
+    // Icon Bars
+    const $bar1 = $('#bar-1');
+    const $bar2 = $('#bar-2');
+    const $bar3 = $('#bar-3');
+
+    function toggleDrawer() {
+        const isOpen = $drawer.hasClass('translate-x-0');
+
+        if (!isOpen) {
+            // Open Menu
+            $drawer.removeClass('-translate-x-full').addClass('translate-x-0');
+            $overlay.removeClass('hidden');
+            setTimeout(() => $overlay.addClass('opacity-100').removeClass('opacity-0'), 10);
+
+            // Animate Icon to "X"
+            $bar1.addClass('rotate-45 translate-x-1');
+            $bar2.addClass('opacity-0 -translate-x-2');
+            $bar3.addClass('-rotate-45 translate-x-1');
+
+            $toggle.attr('aria-expanded', 'true');
+            $('body').addClass('overflow-hidden');
+        } else {
+            // Close Menu
+            $drawer.addClass('-translate-x-full').removeClass('translate-x-0');
+            $overlay.addClass('opacity-0').removeClass('opacity-100');
+            setTimeout(() => $overlay.addClass('hidden'), 300);
+
+            // Animate Icon back to Hamburger
+            $bar1.removeClass('rotate-45 translate-x-1');
+            $bar2.removeClass('opacity-0 -translate-x-2');
+            $bar3.removeClass('-rotate-45 translate-x-1');
+
+            $toggle.attr('aria-expanded', 'false');
+            $('body').removeClass('overflow-hidden');
+        }
+    }
+
+    $toggle.on('click', toggleDrawer);
+    $overlay.on('click', toggleDrawer);
+    $drawerClose.on('click', toggleDrawer);
     // AJAX Product Search - This should always run regardless of tabs
     const $searchInput = $('.search-bar .search-field');
     let searchTimeout;

@@ -1,13 +1,41 @@
-.container {
-  width: 100%;
-  max-width: 1120px !important;
-  margin: 0 auto;
-  padding: 0 1rem;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--surface);
+  color: #111;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Syne', sans-serif;
+}
+
+.no-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 img {
   max-width: 100%;
   height: auto;
+}
+
+.d-none {
+  display: none;
+}
+
+.container {
+  width: 100%;
+  max-width: 1120px !important;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .site-header {
@@ -18,7 +46,7 @@ img {
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000;
+    z-index: 10;
     &.scroll-up {
       transform: translateY(-100%);
     }
@@ -66,14 +94,61 @@ img {
   border-bottom: 1px solid #F5F5F5;
   background-color: #fff;
 
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .main-navigation-inner {
     display: flex;
-    justify-content: center;
-    align-items: center;
 
+    & > div {
+      overflow-x: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      //justify-content: center;
+      //align-items: center;
+
+      li {
+        a {
+          text-decoration: none;
+          color: #333;
+          transition: all 0.3s ease;
+          display: block;
+          padding: 8px;
+          font-weight: 600;
+          @media screen and (min-width: 800px) {
+            padding: 8px 15px;
+          }
+        }
+
+        &:hover, &.current-menu-item {
+          a {
+            color: var(--accent);
+          }
+        }
+
+        @media screen and (max-width: 767px) {
+          &:nth-child(3) {
+            ~ li {
+              display: none;
+            }
+          }
+
+        }
+      }
+    }
+
+    .menu-toggle {
+      margin-left: auto;
+    }
+  }
+}
+
+#mobile-menu-list {
+  ul {
     li {
       a {
         text-decoration: none;
@@ -81,50 +156,107 @@ img {
         transition: all 0.3s ease;
         display: block;
         padding: 8px;
-        font-weight: 600;
-        @media screen and (min-width: 800px) {
-          padding: 8px 15px;
-        }
+      }
 
-        &:hover, &.current-menu-item {
+      &:hover, &.current-menu-item {
+        a {
           color: var(--accent);
         }
       }
+
     }
   }
 }
 
-.hero-card-wrapper {
-  display: grid;
-  @media screen and (min-width: 800px) {
-    grid-template-columns: 1fr 2fr 1fr;
-    gap: 1rem;
-    .hero-card {
-      &:nth-child(2) {
-        grid-row: span 2;
-      }
-    }
-  }
 
-  .hero-card {
-    transition: transform .26s ease, box-shadow .26s ease;
-    position: relative;
-    overflow: hidden;
-    border-radius: .5rem;
+.search-bar {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, .07);
+}
 
-    &:hover {
-      transform: translateY(-4px) scale(1.01);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, .16);
-    }
-  }
+.search-results-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 1000;
+  margin-top: 4px;
+  display: none;
+}
 
-  @media screen and (max-width: 800px) {
-    .hero-card {
-      display: none;
+.search-result-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f3f4f6;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
 
-      &:nth-child(2) {
-        display: block;
-      }
-    }
-  }
+.search-result-item:hover {
+  background-color: #f9fafb;
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.search-result-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.search-result-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.search-result-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.search-result-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  margin: 0 0 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-result-price {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.search-result-price .amount {
+  font-weight: 600;
+  color: #111827;
+}
+
+.search-loading,
+.search-no-results,
+.search-error {
+  padding: 16px;
+  text-align: center;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.search-error {
+  color: #dc2626;
 }
