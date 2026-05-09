@@ -103,6 +103,11 @@ function dimdul_gadget_setup() {
 add_action( 'after_setup_theme', 'dimdul_gadget_setup' );
 
 add_filter('use_block_editor_for_post', '__return_false', 10);
+// Disables the block editor from managing widgets in the Gutenberg plugin.
+add_filter( 'gutenberg_use_widgets_block_editor', '__return_false' );
+
+// Disables the block editor from managing widgets.
+add_filter( 'use_widgets_block_editor', '__return_false' );
 
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
@@ -124,13 +129,13 @@ add_action( 'after_setup_theme', 'dimdul_gadget_content_width', 0 );
 function dimdul_gadget_widgets_init() {
 	register_sidebar(
 		array(
-			'name'          => esc_html__( 'Sidebar', 'dimdul-gadget' ),
+			'name'          => esc_html__( 'Footer', 'dimdul-gadget' ),
 			'id'            => 'sidebar-1',
 			'description'   => esc_html__( 'Add widgets here.', 'dimdul-gadget' ),
-			'before_widget' => '<div id="%1$s" class="widget %2$s">',
+			'before_widget' => '<div id="%1$s" class="widget footer-widget %2$s">',
 			'after_widget'  => '</div>',
-			'before_title'  => '<h2 class="widget-title">',
-			'after_title'   => '</h2>',
+			'before_title'  => '<h4 class="widget-title">',
+			'after_title'   => '</h4>',
 		)
 	);
 }

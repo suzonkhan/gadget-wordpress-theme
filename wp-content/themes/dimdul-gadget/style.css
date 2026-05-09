@@ -918,4 +918,217 @@ ul.woocommerce-shipping-methods li input[type=radio]:checked + label:before {
   display: table-cell;
 }
 
+/****************
+5(A) Widget Common
+*****************/
+.widget {
+  margin-bottom: 30px;
+}
+.widget .widget-title {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: inherit;
+}
+.widget ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.widget ul li > ul {
+  padding-left: 20px;
+}
+.widget ul li a {
+  transition: all 0.3s ease-in-out;
+  font-weight: normal;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  color: inherit;
+  font-size: 1rem;
+  display: inline-block;
+  text-decoration: none;
+}
+.widget_archive a, .widget_categories ul li a {
+  padding-right: 5px;
+  font-size: 1rem;
+}
+.widget_recent_entries span {
+  display: block;
+  margin-bottom: 6px;
+  line-height: 17px;
+  font-size: 0.8125rem;
+}
+.widget_calendar {
+  width: 100%;
+}
+.widget_calendar caption {
+  position: absolute;
+  bottom: 0;
+  z-index: 1;
+  width: 100%;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
+}
+.widget_calendar table {
+  position: relative;
+  width: 100%;
+  border-collapse: collapse;
+}
+.widget_calendar table thead th {
+  padding: 2px 2px 10px 2px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+.widget_calendar table tbody td {
+  text-align: center;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  padding: 2px;
+}
+.widget_calendar table tfoot #next,
+.widget_calendar table tfoot #prev {
+  position: relative;
+  z-index: 2;
+}
+.widget_calendar table tfoot #next {
+  text-align: right;
+}
+.widget_calendar table tfoot #prev {
+  padding-top: 10px;
+}
+.widget_tag_cloud .tagcloud {
+  position: relative;
+  display: inline-block;
+}
+.widget_tag_cloud a,
+.widget_tag_cloud .post-tags a {
+  position: relative;
+  display: inline-block;
+  float: left;
+  cursor: pointer;
+  margin: 8px 6px 0 0;
+  padding: 0 12px !important;
+  font-size: 0.8125rem !important;
+  line-height: 28px !important;
+  border: 1px solid #dadada;
+  border-radius: 2px;
+  text-transform: capitalize;
+  transition: all 0.2s linear;
+}
+
+/****************
+Widget Comments & Replies
+*****************/
+.comments {
+  position: relative;
+  list-style: none;
+  margin: 30px 0;
+  padding: 0;
+}
+.comments .image {
+  overflow: hidden;
+}
+.comments .image img {
+  max-width: 60px;
+}
+.comments .author {
+  margin-bottom: 10px;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+.comments .date {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.875rem;
+}
+.comments .date a {
+  color: #333;
+}
+.comments .text {
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+.comments li {
+  margin-bottom: 30px;
+}
+.comments ul {
+  padding-left: 70px;
+}
+
+.comment-wrp {
+  position: relative;
+}
+
+.reply {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+h3.comment-reply-title {
+  display: table;
+  font-size: 2.074rem;
+}
+
+/****************
+Widget Titles Outside .widget Scope
+*****************/
+h4.comments-title {
+  margin-bottom: 10px;
+  font-size: 1.728rem;
+}
+h4.comments-title::after {
+  display: block;
+  content: "";
+  margin-top: 5px;
+  width: 15%;
+  height: 1px;
+  transition: all 0.3s ease-in-out;
+  background-color: var(--accent);
+}
+
+h4.author a {
+  color: #333;
+}
+
+/****************
+Widget Search
+*****************/
+.search-form input[type=search] {
+  width: 185px;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 15px;
+  font-size: 0.9375rem;
+  font-weight: normal;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  outline: none;
+  color: #333;
+}
+.search-form input[type=submit] {
+  text-align: center;
+  padding: 5px;
+  box-sizing: border-box;
+  border: none;
+  color: #fff;
+  white-space: nowrap;
+  vertical-align: top;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: bold;
+  height: 40px;
+  line-height: 30px;
+  text-transform: uppercase;
+  user-select: none;
+  -webkit-appearance: none;
+  background-color: var(--accent);
+}
+
+#form-submit .btn-default {
+  background: none;
+}
+
 /*# sourceMappingURL=style.css.map */

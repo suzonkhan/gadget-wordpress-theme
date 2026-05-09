@@ -1,0 +1,251 @@
+/****************
+5(A) Widget Common
+*****************/
+.widget {
+  margin-bottom: 30px;
+
+  .widget-title {
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: inherit;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      & > ul {
+        padding-left: 20px;
+      }
+
+      a {
+        transition: all 0.3s ease-in-out;
+        font-weight: normal;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        color: inherit;
+        font-size: 1rem; // 16px
+        display: inline-block;
+        text-decoration: none;
+      }
+    }
+  }
+
+  &_archive a,
+  &_categories ul li a {
+    padding-right: 5px;
+    font-size: 1rem; // 16px
+  }
+
+  &_recent_entries span {
+    display: block;
+    margin-bottom: 6px;
+    line-height: 17px;
+    font-size: 0.8125rem; // 13px
+  }
+
+  &_calendar {
+    width: 100%;
+
+    caption {
+      position: absolute;
+      bottom: 0;
+      z-index: 1;
+      width: 100%;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1rem; // 16px
+    }
+
+    table {
+      position: relative;
+      width: 100%;
+      border-collapse: collapse;
+
+      thead th {
+        padding: 2px 2px 10px 2px;
+        font-size: 0.8125rem; // 13px
+        font-weight: 600;
+        cursor: pointer;
+        text-align: center;
+      }
+
+      tbody {
+        td {
+          text-align: center;
+          cursor: pointer;
+          font-size: 0.8125rem; // 13px
+          padding: 2px;
+        }
+      }
+
+      tfoot {
+        #next,
+        #prev {
+          position: relative;
+          z-index: 2;
+        }
+
+        #next {
+          text-align: right;
+        }
+
+        #prev {
+          padding-top: 10px;
+        }
+      }
+    }
+  }
+
+  &_tag_cloud {
+    .tagcloud {
+      position: relative;
+      display: inline-block;
+    }
+
+    a,
+    .post-tags a {
+      position: relative;
+      display: inline-block;
+      float: left;
+      cursor: pointer;
+      margin: 8px 6px 0 0;
+      padding: 0 12px !important;
+      font-size: 0.8125rem !important; // 13px
+      line-height: 28px !important;
+      border: 1px solid #dadada;
+      border-radius: 2px;
+      text-transform: capitalize;
+      transition: all 0.2s linear;
+    }
+  }
+}
+
+/****************
+Widget Comments & Replies
+*****************/
+.comments {
+  position: relative;
+  list-style: none;
+  margin: 30px 0;
+  padding: 0;
+
+  .image {
+    overflow: hidden;
+
+    img {
+      max-width: 60px;
+    }
+  }
+
+  .author {
+    margin-bottom: 10px;
+    font-size: 1.125rem; // ≈ 18px
+    font-weight: 500;
+  }
+
+  .date {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.875rem; // ≈ 14px
+
+    a {
+      color: #333;
+    }
+  }
+
+  .text {
+    margin-bottom: 10px;
+    font-size: 1rem; // 16px
+  }
+
+  li {
+    margin-bottom: 30px;
+  }
+
+  ul {
+    padding-left: 70px;
+  }
+}
+
+.comment-wrp {
+  position: relative;
+}
+
+.reply {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+h3.comment-reply-title {
+  display: table;
+  font-size: 2.074rem; // ≈ 33.18px
+}
+
+/****************
+Widget Titles Outside .widget Scope
+*****************/
+h4.comments-title {
+  margin-bottom: 10px;
+  font-size: 1.728rem; // ≈ 27.65px
+
+  &::after {
+    display: block;
+    content: '';
+    margin-top: 5px;
+    width: 15%;
+    height: 1px;
+    transition: all 0.3s ease-in-out;
+    background-color: var(--accent);
+  }
+}
+
+h4.author a {
+  color: #333;
+}
+
+/****************
+Widget Search
+*****************/
+.search-form {
+  input[type='search'] {
+    width: 185px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 15px;
+    font-size: 0.9375rem; // 15px
+    font-weight: normal;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    outline: none;
+    color: #333;
+  }
+
+  input[type='submit'] {
+    text-align: center;
+    padding: 5px;
+    box-sizing: border-box;
+    border: none;
+    color: #fff;
+    white-space: nowrap;
+    vertical-align: top;
+    cursor: pointer;
+    font-size: 0.75rem; // 12px
+    font-weight: bold;
+    height: 40px;
+    line-height: 30px;
+    text-transform: uppercase;
+    user-select: none;
+    -webkit-appearance: none;
+    background-color: var(--accent);
+  }
+}
+
+#form-submit {
+  .btn-default {
+    background: none;
+  }
+}
