@@ -757,40 +757,6 @@ body.woocommerce-checkout h3 {
 body.woocommerce-checkout .woocommerce-additional-fields h3 {
   display: none;
 }
-body.woocommerce-checkout form.woocommerce-checkout {
-  display: grid;
-  gap: 16px;
-}
-@media screen and (min-width: 767px) {
-  body.woocommerce-checkout form.woocommerce-checkout {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-@media screen and (min-width: 600px) {
-  body.woocommerce-checkout form.woocommerce-checkout > div.woocommerce-NoticeGroup {
-    grid-column: span 2;
-  }
-  body.woocommerce-checkout form.woocommerce-checkout > div.woocommerce-NoticeGroup ul {
-    margin-bottom: 0;
-  }
-}
-@media screen and (min-width: 600px) {
-  body.woocommerce-checkout form.woocommerce-checkout > div {
-    padding: 1rem;
-    border: 1px solid #e5e7eb;
-    background-color: #fff;
-  }
-}
-body.woocommerce-checkout #billing_country_field {
-  display: none !important;
-}
-body.woocommerce-checkout .woocommerce-terms-and-conditions-wrapper {
-  display: none;
-}
-body.woocommerce-checkout #place_order {
-  width: 100%;
-  padding: 1rem;
-}
 @media screen and (max-width: 767px) {
   body.woocommerce-checkout .entry-header {
     display: none;
@@ -800,18 +766,56 @@ body.woocommerce-checkout #place_order {
   }
 }
 
-.woocommerce-checkout-review-order-table tr td:last-child, .woocommerce-checkout-review-order-table tr th:last-child {
-  text-align: right;
+@media screen and (max-width: 600px) {
+  .woocommerce-breadcrumb {
+    display: none;
+  }
+  .product-page-right-sidebar {
+    background: transparent !important;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .product-page-right-sidebar > div {
+    padding: 8px;
+    border: 1px solid #e5e7eb;
+  }
+  .woocommerce h2 {
+    font-size: 18px;
+  }
 }
-.woocommerce-checkout-review-order-table tbody > tr:nth-child(odd) > td {
-  background-color: #fff4f4;
+form.woocommerce-checkout {
+  display: grid;
+  gap: 16px;
 }
-.woocommerce-checkout-review-order-table tfoot tr.woocommerce-shipping-totals th {
+@media screen and (min-width: 767px) {
+  form.woocommerce-checkout {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media screen and (min-width: 600px) {
+  form.woocommerce-checkout > div.woocommerce-NoticeGroup {
+    grid-column: span 2;
+  }
+  form.woocommerce-checkout > div.woocommerce-NoticeGroup ul {
+    margin-bottom: 0;
+  }
+}
+@media screen and (min-width: 600px) {
+  form.woocommerce-checkout > div {
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    background-color: #fff;
+  }
+}
+form.woocommerce-checkout #billing_country_field {
+  display: none !important;
+}
+form.woocommerce-checkout .woocommerce-terms-and-conditions-wrapper {
   display: none;
 }
-.woocommerce-checkout-review-order-table tfoot tr.woocommerce-shipping-totals td {
+form.woocommerce-checkout button#place_order {
   width: 100%;
-  display: table-cell;
+  padding: 1rem;
 }
 
 ul.woocommerce-shipping-methods li label {
@@ -852,28 +856,18 @@ ul.woocommerce-shipping-methods li input[type=radio]:checked + label:before {
   background-size: 81%;
 }
 
-@media screen and (max-width: 600px) {
-  .woocommerce-breadcrumb {
-    display: none;
-  }
-  .product-page-right-sidebar {
-    background: transparent !important;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-  .product-page-right-sidebar > div {
-    padding: 8px;
-    border: 1px solid #e5e7eb;
-  }
-  .woocommerce h2 {
-    font-size: 18px;
-  }
+.woocommerce-checkout-review-order-table tr td:last-child, .woocommerce-checkout-review-order-table tr th:last-child {
+  text-align: right;
 }
-.woocommerce-cart .wc-block-cart-item__quantity {
+.woocommerce-checkout-review-order-table tbody > tr:nth-child(odd) > td {
+  background-color: #fff4f4;
+}
+.woocommerce-checkout-review-order-table tfoot tr.woocommerce-shipping-totals th {
+  display: none;
+}
+.woocommerce-checkout-review-order-table tfoot tr.woocommerce-shipping-totals td {
   width: 100%;
-}
-.woocommerce-cart .wc-block-cart-item__quantity button.wc-block-cart-item__remove-link {
-  margin-left: auto;
+  display: table-cell;
 }
 
 /*# sourceMappingURL=layout.css.map */

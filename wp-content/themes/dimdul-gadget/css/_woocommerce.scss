@@ -296,42 +296,7 @@ body.woocommerce-checkout {
   //#contact {
   //  display: none !important;
   //}
-  form.woocommerce-checkout {
-    display: grid;
-    gap: 16px;
-    @media screen and (min-width: 767px) {
-      grid-template-columns: 1fr 1fr;
-    }
 
-    & > div {
-      &.woocommerce-NoticeGroup {
-        @media screen and (min-width: 600px) {
-          grid-column: span 2;
-          ul {
-            margin-bottom: 0;
-          }
-        }
-      }
-
-      @media screen and (min-width: 600px) {
-        padding: 1rem;
-        border: 1px solid #e5e7eb;
-        background-color: #fff;
-      }
-
-    }
-  }
-  #billing_country_field {
-    display: none !important;
-  }
-  .woocommerce-terms-and-conditions-wrapper {
-    display: none;
-  }
-
-  #place_order {
-    width: 100%;
-    padding: 1rem;
-  }
 
   @media screen and (max-width: 767px) {
     //.wc-block-checkout__contact-fields {
@@ -347,91 +312,7 @@ body.woocommerce-checkout {
   }
 }
 
-.woocommerce-checkout-review-order-table {
-  tr {
-    td, th {
-      &:last-child {
-        text-align: right;
-      }
-    }
-  }
 
-  tbody > tr {
-    &:nth-child(odd) {
-      & > td {
-        background-color: #fff4f4;
-      }
-
-    }
-
-
-  }
-
-  tfoot {
-    tr.woocommerce-shipping-totals th {
-      display: none;
-    }
-
-    tr.woocommerce-shipping-totals td {
-      width: 100%;
-      display: table-cell;
-    }
-  }
-}
-
-ul.woocommerce-shipping-methods {
-  li {
-    label {
-      background-color: #deedef;
-      padding: 12px 16px;
-      margin-bottom: 2px;
-
-      border: 1px solid #bcd1d4;
-      border-radius: 4px;
-      cursor: pointer;
-      display: flex !important;
-      align-items: center;
-      gap: 8px;
-
-      span {
-        margin-left: auto;
-      }
-
-      &:hover {
-        background-color: #d3edf1;
-      }
-
-      &:before {
-        content: "";
-        display: block;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background-color: #fff;
-        border: 1px solid #81d3af;
-
-      }
-    }
-
-    input[type="radio"] {
-      display: none;
-
-      &:checked {
-        & + label {
-          background-color: #81d3af;
-
-          &:before {
-            background: #07804b url('data:image/svg+xml,<svg width="24px" height="24px" viewBox="0 0 0.72 0.72" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.637 0.198a0.03 0.03 0 0 1 0 0.042L0.308 0.57a0.03 0.03 0 0 1 -0.042 0l-0.186 -0.182a0.03 0.03 0 0 1 0 -0.042l0.021 -0.021a0.03 0.03 0 0 1 0.042 0l0.143 0.141 0.287 -0.287a0.03 0.03 0 0 1 0.042 0z" fill="%23ffffff"/></svg>');
-            background-position: center center;
-            background-size: 81%;
-          }
-        }
-      }
-    }
-
-
-  }
-}
 
 @media screen and (max-width: 600px) {
   .woocommerce-breadcrumb {
@@ -456,13 +337,3 @@ ul.woocommerce-shipping-methods {
   }
 }
 
-.woocommerce-cart {
-  .wc-block-cart-item__quantity {
-    width: 100%;
-
-    button.wc-block-cart-item__remove-link {
-      margin-left: auto;
-    }
-  }
-
-}

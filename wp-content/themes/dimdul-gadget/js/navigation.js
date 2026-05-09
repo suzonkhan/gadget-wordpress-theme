@@ -129,12 +129,18 @@ jQuery(function ($) {
 
     // Fixed CTA
     $(window).on('scroll', function () {
-        var stickyPoint = $('.product-cta-wrapper').parent().offset().top + $('.product-cta-wrapper').outerHeight();
+        var $ctaWrapper = $('.product-cta-wrapper');
+
+        if (!$ctaWrapper.length) {
+            return;
+        }
+
+        var stickyPoint = $ctaWrapper.parent().offset().top + $ctaWrapper.outerHeight();
 
         if ($(window).scrollTop() > stickyPoint) {
-            $('.product-cta-wrapper').addClass('is-sticky');
+            $ctaWrapper.addClass('is-sticky');
         } else {
-            $('.product-cta-wrapper').removeClass('is-sticky');
+            $ctaWrapper.removeClass('is-sticky');
         }
     });
 
@@ -158,5 +164,5 @@ jQuery(function ($) {
     });
 
 
-   
+
 });

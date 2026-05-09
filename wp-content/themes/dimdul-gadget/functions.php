@@ -9,7 +9,7 @@
 
 if ( ! defined( '_S_VERSION' ) ) {
 	// Replace the version number of the theme on each release.
-	define( '_S_VERSION', '1.0.0' );
+	define( '_S_VERSION', '1.0.1' );
 }
 
 /**
@@ -102,7 +102,7 @@ function dimdul_gadget_setup() {
 }
 add_action( 'after_setup_theme', 'dimdul_gadget_setup' );
 
-//add_filter('use_block_editor_for_post', '__return_false', 10);
+add_filter('use_block_editor_for_post', '__return_false', 10);
 
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
@@ -141,8 +141,8 @@ add_action( 'widgets_init', 'dimdul_gadget_widgets_init' );
  */
 function dimdul_gadget_scripts() {
 	wp_enqueue_style( 'dimdul-gadget-style', get_stylesheet_uri(), array(), _S_VERSION );
-    wp_enqueue_style( 'dimdul-tailwind-style', get_template_directory_uri(). '/css/tailwind.css');
-    wp_enqueue_style( 'dimdul-gadget-layout', get_template_directory_uri(). '/css/layout.css');
+    wp_enqueue_style( 'dimdul-tailwind-style', get_template_directory_uri(). '/css/tailwind.css', array(), _S_VERSION);
+    wp_enqueue_style( 'dimdul-gadget-layout', get_template_directory_uri(). '/css/layout.css', array(), _S_VERSION);
 	wp_enqueue_script( 'dimdul-gadget-navigation', get_template_directory_uri() . '/js/navigation.js', array('jquery'), _S_VERSION, true );
 
 	// Localize script for AJAX

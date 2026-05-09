@@ -29,6 +29,30 @@ if (!$product || !$product->exists()) {
     exit;
 }
 
+// Auto-add simple product to cart
+$cart_quantity = 1; // Default quantity
+if ($product->is_type('simple') && $product->is_in_stock()) {
+    // Check if product is already in cart
+    $cart = WC()->cart;
+    $product_in_cart = false;
+    
+    if ($cart) {
+        foreach ($cart->get_cart() as $cart_item) {
+            if ($cart_item['product_id'] == $product_id) {
+                $product_in_cart = true;
+                $cart_quantity = $cart_item['quantity'];
+                break;
+            }
+        }
+        
+        // Add product to cart if not already present
+        if (!$product_in_cart) {
+            $cart->add_to_cart($product_id, $cart_quantity);
+            wc_add_notice(__('Product automatically added to cart. Please complete your purchase below.', 'dimdul-gadget'), 'success');
+        }
+    }
+}
+
 // Store original global post and product
 $original_post = $GLOBALS['post'];
 $original_product = $GLOBALS['product'] ?? null;
@@ -55,6 +79,7 @@ add_filter('woocommerce_get_checkout_url', function($url) {
                 <!-- Product Gallery -->
                 <div class="product-gallery-section">
                     <div class="gallery-main-wrapper">
+
                         <div class="gallery-main aspect-square bg-gray-100 rounded-lg overflow-hidden mb-4">
                             <?php if ($product->get_image_id()): ?>
                                 <img id="main-product-image"
@@ -196,7 +221,133 @@ add_filter('woocommerce_get_checkout_url', function($url) {
                         <?php endif; ?>
                     </div>
 
+                    <!-- Quantity Selector (for simple products) -->
+                    <?php if ($product->is_type('simple') && $product->is_in_stock()): ?>
+                        <div class="quantity-section mb-6">
+                            <h3 class="text-lg font-semibold mb-4"><?php esc_html_e('Quantity:', 'dimdul-gadget'); ?></h3>
+                            <div class="quantity-selector flex items-center gap-4">
+                                <div class="flex items-center border rounded-lg">
+                                    <button type="button" id="qty-decrement" 
+                                            class="px-3 py-2 text-gray-600 hover:bg-gray-100 transition-colors">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                        </svg>
+                                    </button>
+                                    <input type="number" id="product-quantity" name="quantity" value="<?php echo esc_attr($cart_quantity); ?>" min="1" max="<?php echo esc_attr($product->get_stock_quantity() ?: 999); ?>" 
+                                           class="w-16 text-center border-0 focus:ring-0">
+                                    <button type="button" id="qty-increment" 
+                                            class="px-3 py-2 text-gray-600 hover:bg-gray-100 transition-colors">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <button type="button" id="update-cart-btn" 
+                                        class="bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                                    <?php esc_html_e('Update Cart', 'dimdul-gadget'); ?>
+                                </button>
+                            </div>
+                            <div id="quantity-message" class="mt-3 text-sm"></div>
+                        </div>
+                    <?php endif; ?>
 
+                    <!-- Variable Product Variations -->
+                    <?php if ($product->is_type('variable')): ?>
+                        <div class="variations-section mb-6">
+                            <h3 class="text-lg font-semibold mb-4"><?php esc_html_e('Select Variation:', 'dimdul-gadget'); ?></h3>
+                            <div class="variations-form">
+                                <?php
+                                $variations = $product->get_available_variations();
+                                $attributes = $product->get_variation_attributes();
+                                
+                                if (!empty($variations)):
+                                    foreach ($variations as $variation):
+                                        $variation_obj = wc_get_product($variation['variation_id']);
+                                        if (!$variation_obj || !$variation_obj->is_in_stock()) {
+                                            continue;
+                                        }
+                                        ?>
+                                        <div class="variation-option border rounded-lg p-4 mb-3 cursor-pointer transition-all hover:border-blue-500" 
+                                             data-variation-id="<?php echo esc_attr($variation['variation_id']); ?>"
+                                             data-price="<?php echo esc_attr($variation['display_price']); ?>"
+                                             data-regular-price="<?php echo esc_attr($variation['display_regular_price']); ?>">
+                                            <label class="flex items-center cursor-pointer">
+                                                <input type="radio" name="variation_selection" value="<?php echo esc_attr($variation['variation_id']); ?>" 
+                                                       class="mr-3 text-blue-600 focus:ring-blue-500">
+                                                <div class="flex-1">
+                                                    <div class="font-medium">
+                                                        <?php
+                                                        $variation_attributes = array();
+                                                        foreach ($variation['attributes'] as $attr_name => $attr_value) {
+                                                            $taxonomy = str_replace('attribute_', '', $attr_name);
+                                                            $label = wc_attribute_label($taxonomy, $product);
+                                                            if ($attr_value) {
+                                                                $variation_attributes[] = $label . ': ' . wc_attribute_label($attr_value, $product);
+                                                            }
+                                                        }
+                                                        echo esc_html(implode(', ', $variation_attributes));
+                                                        ?>
+                                                    </div>
+                                                    <div class="text-sm text-gray-600 mt-1">
+                                                        <?php echo wc_price($variation['display_price']); ?>
+                                                        <?php if ($variation['display_regular_price'] > $variation['display_price']): ?>
+                                                            <span class="line-through text-gray-400 ml-2">
+                                                                <?php echo wc_price($variation['display_regular_price']); ?>
+                                                            </span>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                    <?php if ($variation_obj->get_stock_quantity()): ?>
+                                                        <div class="text-xs text-green-600 mt-1">
+                                                            <?php echo esc_html(sprintf(__('In stock: %d available', 'dimdul-gadget'), $variation_obj->get_stock_quantity())); ?>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <?php
+                                    endforeach;
+                                endif;
+                                ?>
+                            </div>
+                            
+                            <!-- Quantity Selector for Variable Products -->
+                            <div class="quantity-section mb-4">
+                                <h3 class="text-lg font-semibold mb-4"><?php esc_html_e('Quantity:', 'dimdul-gadget'); ?></h3>
+                                <div class="quantity-selector flex items-center gap-4">
+                                    <div class="flex items-center border rounded-lg">
+                                        <button type="button" id="qty-decrement" 
+                                                class="px-3 py-2 text-gray-600 hover:bg-gray-100 transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                            </svg>
+                                        </button>
+                                        <input type="number" id="product-quantity" name="quantity" value="1" min="1" max="999" 
+                                               class="w-16 text-center border-0 focus:ring-0">
+                                        <button type="button" id="qty-increment" 
+                                                class="px-3 py-2 text-gray-600 hover:bg-gray-100 transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <button type="button" id="add-to-cart-btn" 
+                                            class="bg-green-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                                            disabled>
+                                        <?php esc_html_e('Add to Cart', 'dimdul-gadget'); ?>
+                                    </button>
+                                </div>
+                                <div id="quantity-message" class="mt-3 text-sm"></div>
+                            </div>
+                            
+                            <button type="button" id="buy-now-btn" 
+                                    class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                                    disabled>
+                                <?php esc_html_e('Buy Now', 'dimdul-gadget'); ?>
+                            </button>
+                            
+                            <div id="variation-message" class="mt-3 text-sm"></div>
+                        </div>
+                    <?php endif; ?>
 
                 </div>
                 <!-- Trust Badges -->
@@ -345,37 +496,6 @@ add_filter('woocommerce_get_checkout_url', function($url) {
                 </div>
             </div>
         <?php
-        else:
-            // Fallback to default FAQs if no product-specific FAQs
-        ?>
-            <div class="faq-section py-12">
-                <div class="container mx-auto px-4">
-                    <div class="max-w-4xl mx-auto">
-                        <h2 class="text-2xl font-bold text-center mb-8"><?php esc_html_e('Frequently Asked Questions', 'dimdul-gadget'); ?></h2>
-
-                        <div class="faq-item bg-white rounded-lg p-6 mb-4 shadow">
-                            <h3 class="font-semibold mb-2"><?php esc_html_e('What payment methods do you accept?', 'dimdul-gadget'); ?></h3>
-                            <p class="text-gray-700"><?php esc_html_e('We accept all major credit cards, debit cards, and popular online payment methods. All transactions are secure and encrypted.', 'dimdul-gadget'); ?></p>
-                        </div>
-
-                        <div class="faq-item bg-white rounded-lg p-6 mb-4 shadow">
-                            <h3 class="font-semibold mb-2"><?php esc_html_e('How long does shipping take?', 'dimdul-gadget'); ?></h3>
-                            <p class="text-gray-700"><?php esc_html_e('Standard shipping typically takes 5-7 business days. Express shipping options are available at checkout.', 'dimdul-gadget'); ?></p>
-                        </div>
-
-                        <div class="faq-item bg-white rounded-lg p-6 mb-4 shadow">
-                            <h3 class="font-semibold mb-2"><?php esc_html_e('What is your return policy?', 'dimdul-gadget'); ?></h3>
-                            <p class="text-gray-700"><?php esc_html_e('We offer a 30-day return policy on all unused items in their original packaging. Please contact our customer service team to initiate a return.', 'dimdul-gadget'); ?></p>
-                        </div>
-
-                        <div class="faq-item bg-white rounded-lg p-6 mb-4 shadow">
-                            <h3 class="font-semibold mb-2"><?php esc_html_e('Is my personal information secure?', 'dimdul-gadget'); ?></h3>
-                            <p class="text-gray-700"><?php esc_html_e('Yes, we use industry-standard SSL encryption to protect your personal and payment information. Your privacy and security are our top priorities.', 'dimdul-gadget'); ?></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <?php
         endif;
         ?>
 
@@ -415,5 +535,310 @@ $GLOBALS['post'] = $original_post;
 $GLOBALS['product'] = $original_product;
 
 get_footer('shop');
+?>
 
+<script>
+jQuery(document).ready(function($) {
+    // Quantity controls
+    function updateQuantity() {
+        var $input = $('#product-quantity');
+        var value = parseInt($input.val());
+        var min = parseInt($input.attr('min'));
+        var max = parseInt($input.attr('max'));
+        
+        // Ensure value is within bounds
+        if (value < min) value = min;
+        if (value > max) value = max;
+        
+        $input.val(value);
+    }
+    
+    // Function to update cart for variable products
+    function updateVariableCart() {
+        var selectedVariation = $('input[name="variation_selection"]:checked');
+        
+        if (!selectedVariation.length) {
+            console.log('No variation selected');
+            return false;
+        }
+        
+        var variationId = selectedVariation.val();
+        var quantity = parseInt($('#product-quantity').val());
+        var $message = $('#quantity-message');
+        
+        // Validate quantity
+        if (isNaN(quantity) || quantity < 1) {
+            $message.html('<span class="text-red-600"><?php esc_html_e('Invalid quantity', 'dimdul-gadget'); ?></span>');
+            return false;
+        }
+        
+        // Show loading state
+        $message.html('<span class="text-blue-600"><?php esc_html_e('Updating cart...', 'dimdul-gadget'); ?></span>');
+        
+        // Check if wc_add_to_cart_params is defined
+        var ajaxUrl = '/?wc-ajax=add_to_cart';
+        if (typeof wc_add_to_cart_params !== 'undefined') {
+            ajaxUrl = wc_add_to_cart_params.wc_ajax_url.toString().replace('%%endpoint%%', 'add_to_cart');
+        }
+        
+        // Update cart via AJAX
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            data: {
+                action: 'woocommerce_add_to_cart',
+                product_id: '<?php echo esc_js($product_id); ?>',
+                variation_id: variationId,
+                quantity: quantity
+            },
+            success: function(response) {
+                console.log('AJAX Response:', response);
+                
+                if (response.error) {
+                    if (response.product_url) {
+                        window.location = response.product_url;
+                        return;
+                    }
+                    $message.html('<span class="text-red-600">' + response.error + '</span>');
+                    return;
+                }
+                
+                // Show success message
+                $message.html('<span class="text-green-600"><?php esc_html_e('Cart updated successfully!', 'dimdul-gadget'); ?></span>');
+                
+                // Clear message after 2 seconds
+                setTimeout(function() {
+                    $message.html('');
+                }, 2000);
+                
+                // Trigger cart update events to refresh order summary
+                $(document.body).trigger('wc_fragment_refresh');
+                $(document.body).trigger('update_checkout');
+                $(document.body).trigger('updated_cart_totals');
+                
+                // Refresh the page after a short delay to ensure cart is updated
+                setTimeout(function() {
+                    window.location.reload();
+                }, 500);
+            },
+            error: function(xhr, status, error) {
+                console.log('AJAX Error:', status, error);
+                $message.html('<span class="text-red-600"><?php esc_html_e('Error updating cart. Please try again.', 'dimdul-gadget'); ?></span>');
+            }
+        });
+        
+        return true;
+    }
+    
+    // Increment quantity
+    $('#qty-increment').on('click', function(e) {
+        e.preventDefault();
+        var $input = $('#product-quantity');
+        var value = parseInt($input.val()) + 1;
+        var max = parseInt($input.attr('max'));
+        
+        if (value <= max) {
+            $input.val(value);
+            
+            // Auto-update cart for variable products only if variation is selected
+            if ($('.variation-option').length > 0 && $('input[name="variation_selection"]:checked').length > 0) {
+                updateVariableCart();
+            }
+        }
+    });
+    
+    // Decrement quantity
+    $('#qty-decrement').on('click', function(e) {
+        e.preventDefault();
+        var $input = $('#product-quantity');
+        var value = parseInt($input.val()) - 1;
+        var min = parseInt($input.attr('min'));
+        
+        if (value >= min) {
+            $input.val(value);
+            
+            // Auto-update cart for variable products only if variation is selected
+            if ($('.variation-option').length > 0 && $('input[name="variation_selection"]:checked').length > 0) {
+                updateVariableCart();
+            }
+        }
+    });
+    
+    // Handle manual input
+    $('#product-quantity').on('change', function() {
+        updateQuantity();
+        
+        // Auto-update cart for variable products only if variation is selected
+        if ($('.variation-option').length > 0 && $('input[name="variation_selection"]:checked').length > 0) {
+            updateVariableCart();
+        }
+    });
+    
+    // Update cart for simple products
+    $('#update-cart-btn').on('click', function(e) {
+        e.preventDefault();
+        
+        var quantity = parseInt($('#product-quantity').val());
+        var $button = $(this);
+        var $message = $('#quantity-message');
+        
+        // Show loading state
+        $button.prop('disabled', true).html('<?php esc_html_e('Updating...', 'dimdul-gadget'); ?>');
+        $message.html('<span class="text-blue-600"><?php esc_html_e('Updating cart...', 'dimdul-gadget'); ?></span>');
+        
+        // Check if wc_add_to_cart_params is defined
+        var ajaxUrl = '/?wc-ajax=add_to_cart';
+        if (typeof wc_add_to_cart_params !== 'undefined') {
+            ajaxUrl = wc_add_to_cart_params.wc_ajax_url.toString().replace('%%endpoint%%', 'add_to_cart');
+        }
+        
+        // Update cart via AJAX
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            data: {
+                action: 'woocommerce_add_to_cart',
+                product_id: '<?php echo esc_js($product_id); ?>',
+                quantity: quantity
+            },
+            success: function(response) {
+                console.log('Simple Product AJAX Response:', response);
+                
+                if (response.error) {
+                    if (response.product_url) {
+                        window.location = response.product_url;
+                        return;
+                    }
+                    $message.html('<span class="text-red-600">' + response.error + '</span>');
+                    return;
+                }
+                
+                // Show success message
+                $message.html('<span class="text-green-600"><?php esc_html_e('Cart updated successfully!', 'dimdul-gadget'); ?></span>');
+                
+                // Trigger cart update events to refresh order summary
+                $(document.body).trigger('wc_fragment_refresh');
+                $(document.body).trigger('update_checkout');
+                $(document.body).trigger('updated_cart_totals');
+                
+                // Refresh page after a short delay to ensure cart is updated
+                setTimeout(function() {
+                    window.location.reload();
+                }, 500);
+            },
+            error: function() {
+                $button.prop('disabled', false).html('<?php esc_html_e('Update Cart', 'dimdul-gadget'); ?>');
+                $message.html('<span class="text-red-600"><?php esc_html_e('Error updating cart. Please try again.', 'dimdul-gadget'); ?></span>');
+            }
+        });
+    });
+    
+    // Handle variation selection
+    $('.variation-option').on('click', function(e) {
+        e.preventDefault();
+        
+        // Remove active class from all options
+        $('.variation-option').removeClass('border-blue-500 bg-blue-50');
+        
+        // Add active class to selected option
+        $(this).addClass('border-blue-500 bg-blue-50');
+        
+        // Check the radio button
+        $(this).find('input[type="radio"]').prop('checked', true);
+        
+        // Enable Buy Now and Add to Cart buttons
+        $('#buy-now-btn').prop('disabled', false);
+        $('#add-to-cart-btn').prop('disabled', false);
+        
+        // Clear any previous messages
+        $('#variation-message').html('');
+        $('#quantity-message').html('');
+        
+        console.log('Variation selected:', $(this).find('input[type="radio"]').val());
+    });
+    
+    // Also handle radio button change directly
+    $('input[name="variation_selection"]').on('change', function() {
+        var $parent = $(this).closest('.variation-option');
+        
+        // Remove active class from all options
+        $('.variation-option').removeClass('border-blue-500 bg-blue-50');
+        
+        // Add active class to selected option
+        $parent.addClass('border-blue-500 bg-blue-50');
+        
+        // Enable Buy Now and Add to Cart buttons
+        $('#buy-now-btn').prop('disabled', false);
+        $('#add-to-cart-btn').prop('disabled', false);
+        
+        // Clear any previous messages
+        $('#variation-message').html('');
+        $('#quantity-message').html('');
+        
+        console.log('Variation changed:', $(this).val());
+    });
+    
+    // Handle Add to Cart button click
+    $('#add-to-cart-btn').on('click', function(e) {
+        e.preventDefault();
+        
+        var selectedVariation = $('input[name="variation_selection"]:checked');
+        
+        if (!selectedVariation.length) {
+            $('#quantity-message').html('<span class="text-red-600"><?php esc_html_e('Please select a variation', 'dimdul-gadget'); ?></span>');
+            return;
+        }
+        
+        updateVariableCart();
+    });
+    
+    // Handle Buy Now button click
+    $('#buy-now-btn').on('click', function(e) {
+        e.preventDefault();
+        
+        var selectedVariation = $('input[name="variation_selection"]:checked');
+        
+        if (!selectedVariation.length) {
+            $('#variation-message').html('<span class="text-red-600"><?php esc_html_e('Please select a variation', 'dimdul-gadget'); ?></span>');
+            return;
+        }
+        
+        var variationId = selectedVariation.val();
+        var quantity = parseInt($('#product-quantity').val());
+        var $button = $(this);
+        var $message = $('#variation-message');
+        
+        // Show loading state
+        $button.prop('disabled', true).html('<?php esc_html_e('Adding to cart...', 'dimdul-gadget'); ?>');
+        $message.html('<span class="text-blue-600"><?php esc_html_e('Processing...', 'dimdul-gadget'); ?></span>');
+        
+        // Add variation to cart via AJAX
+        $.ajax({
+            url: wc_add_to_cart_params.wc_ajax_url.toString().replace('%%endpoint%%', 'add_to_cart'),
+            type: 'POST',
+            data: {
+                action: 'woocommerce_add_to_cart',
+                product_id: '<?php echo esc_js($product_id); ?>',
+                variation_id: variationId,
+                quantity: quantity
+            },
+            success: function(response) {
+                if (response.error && response.product_url) {
+                    window.location = response.product_url;
+                    return;
+                }
+                
+                // Redirect to refresh the page to show updated cart
+                window.location.reload();
+            },
+            error: function() {
+                $button.prop('disabled', false).html('<?php esc_html_e('Buy Now', 'dimdul-gadget'); ?>');
+                $message.html('<span class="text-red-600"><?php esc_html_e('Error adding to cart. Please try again.', 'dimdul-gadget'); ?></span>');
+            }
+        });
+    });
+});
+</script>
+
+<?php
 /* Omit closing PHP tag at the end of PHP files to avoid "headers already sent" issues. */
