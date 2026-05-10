@@ -930,6 +930,7 @@ function theme_render_landing_checkout() {
 	echo '<div class="landing-checkout-area">';
 	echo '<h2 class="text-2xl font-bold text-gray-900 mb-4">' . esc_html__( 'Complete Your Order', 'dimdul-gadget' ) . '</h2>';
 	echo do_shortcode( '[woocommerce_checkout]' );
+	echo '<wc-order-attribution-inputs></wc-order-attribution-inputs>';
 	echo '</div>';
 }
 
@@ -1089,6 +1090,14 @@ function theme_ajax_landing_add_to_cart() {
 		wp_send_json_error( array( 'message' => __( 'Selected variation is unavailable.', 'dimdul-gadget' ) ), 400 );
 	}
 
+	// Keep one landing variation in cart for this parent product.
+	foreach ( WC()->cart->get_cart() as $existing_key => $cart_item ) {
+		$cart_product_id = isset( $cart_item['product_id'] ) ? absint( $cart_item['product_id'] ) : 0;
+		if ( $cart_product_id === $product_id ) {
+			WC()->cart->remove_cart_item( $existing_key );
+		}
+	}
+
 	$cart_item_key = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $attributes );
 	if ( ! $cart_item_key ) {
 		wp_send_json_error( array( 'message' => __( 'Could not add selected variation.', 'dimdul-gadget' ) ), 400 );
@@ -1170,3 +1179,27 @@ function theme_ajax_landing_update_qty() {
 }
 add_action( 'wp_ajax_landing_update_qty', 'theme_ajax_landing_update_qty' );
 add_action( 'wp_ajax_nopriv_landing_update_qty', 'theme_ajax_landing_update_qty' );
+
+function theme_ajax_landing_get_checkout_html() {
+	if ( ! theme_landing_wc_ready() ) {
+		wp_send_json_error( array( 'message' => __( 'WooCommerce is not available.', 'dimdul-gadget' ) ), 400 );
+	}
+
+	check_ajax_referer( 'theme_landing_checkout_nonce', 'nonce' );
+
+	if ( ! theme_landing_ensure_cart() ) {
+		wp_send_json_error( array( 'message' => __( 'Cart is not ready.', 'dimdul-gadget' ) ), 400 );
+	}
+
+	ob_start();
+	theme_render_landing_checkout();
+	$checkout_html = ob_get_clean();
+
+	wp_send_json_success(
+		array(
+			'checkout_html' => $checkout_html,
+		)
+	);
+}
+add_action( 'wp_ajax_landing_get_checkout_html', 'theme_ajax_landing_get_checkout_html' );
+add_action( 'wp_ajax_nopriv_landing_get_checkout_html', 'theme_ajax_landing_get_checkout_html' );

@@ -12,6 +12,7 @@
 		addToCart: false,
 		updateQty: false
 	};
+	var lastAutoVariationId = 0;
 
 	function setStatus(type, text) {
 		var $status = $('#landing-status-message');
@@ -52,6 +53,48 @@
 	function triggerCheckoutRefresh() {
 		$body.trigger('wc_fragment_refresh');
 		$body.trigger('update_checkout');
+		window.setTimeout(normalizeAttributionInputs, 150);
+	}
+
+	function normalizeAttributionInputs() {
+		var $area = $('#landing-checkout-wrap .landing-checkout-area').first();
+		if (!$area.length) {
+			return;
+		}
+
+		var $inputs = $area.find('wc-order-attribution-inputs');
+		var $target = $inputs.first();
+
+		if (!$target.length) {
+			$target = $('<wc-order-attribution-inputs></wc-order-attribution-inputs>');
+		}
+
+		if ($inputs.length > 1) {
+			$inputs.not(':first').remove();
+		}
+
+		$target.detach();
+		$area.append($target);
+	}
+
+	function loadCheckoutHtml() {
+		return $.ajax({
+			url: config.ajax_url,
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				action: 'landing_get_checkout_html',
+				nonce: config.nonce
+			}
+		})
+			.done(function (response) {
+				if (!response || !response.success || !response.data || !response.data.checkout_html) {
+					return;
+				}
+
+				$('#landing-checkout-wrap').html(response.data.checkout_html).removeClass('hidden');
+				normalizeAttributionInputs();
+			});
 	}
 
 	function scrollToCheckout() {
@@ -199,9 +242,11 @@
 						renderQtyControl(data.cart_item_key, data.quantity || quantity);
 					}
 
-					$('#landing-checkout-wrap').removeClass('hidden');
-					triggerCheckoutRefresh();
-					scrollToCheckout();
+					loadCheckoutHtml().always(function () {
+						$('#landing-checkout-wrap').removeClass('hidden');
+						triggerCheckoutRefresh();
+						scrollToCheckout();
+					});
 				})
 				.fail(function () {
 					setStatus('error', config.strings.add_error);
@@ -220,12 +265,22 @@
 			if (variation && variation.price_html) {
 				setStatus('info', config.strings.variation_ready);
 			}
+
+			// Auto-load checkout by adding selected variation immediately.
+			if (variation && variation.variation_id) {
+				var currentVariationId = parseInt(variation.variation_id, 10) || 0;
+				if (currentVariationId && currentVariationId !== lastAutoVariationId && !requestLocks.addToCart) {
+					lastAutoVariationId = currentVariationId;
+					$form.trigger('submit');
+				}
+			}
 		});
 
 		$doc.on('reset_data hide_variation', 'form.variations_form', function () {
 			var $form = $(this);
 			var $button = $form.find('.single_add_to_cart_button');
 			$button.prop('disabled', true).addClass('opacity-50 cursor-not-allowed');
+			lastAutoVariationId = 0;
 		});
 	}
 
@@ -276,5 +331,7 @@
 		handleVariableAddToCart();
 		handleQuantityControls();
 		initSimpleQuantityState();
+		normalizeAttributionInputs();
+		$body.on('updated_checkout', normalizeAttributionInputs);
 	});
 })(jQuery);
