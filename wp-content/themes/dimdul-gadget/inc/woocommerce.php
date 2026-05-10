@@ -958,7 +958,7 @@ function theme_render_landing_variable_form($wc_product)
     $previous_product = $product;
     $product = wc_get_product($wc_product->get_id());
 
-    echo '<div class="mt-6 landing-variable-form">';
+    echo '<div id="landing-variation-selection" class="mt-6 landing-variable-form">';
     woocommerce_variable_add_to_cart();
     echo '</div>';
 
@@ -990,10 +990,209 @@ function theme_render_landing_quantity_control($cart_item_key = '', $quantity = 
 function theme_render_landing_checkout()
 {
     echo '<div class="landing-checkout-area">';
-    echo '<h2 class="text-2xl font-bold text-gray-900 mb-4">' . esc_html__('Complete Your Order', 'dimdul-gadget') . '</h2>';
+    echo '<h2 class="text-2xl font-bold text-gray-900 mb-4 bg-white rounded-sm shadow-sm border border-gray-200 p-3 lg:p-4">' . esc_html__('Complete Your Order', 'dimdul-gadget') . '</h2>';
     echo do_shortcode('[woocommerce_checkout]');
     echo '<wc-order-attribution-inputs></wc-order-attribution-inputs>';
     echo '</div>';
+}
+
+/**
+ * Long product description for landing checkout template.
+ *
+ * @param WC_Product $product Product object.
+ */
+function theme_render_landing_product_description_section($product)
+{
+    if (!$product instanceof WC_Product) {
+        return;
+    }
+
+    $description = $product->get_description();
+    if ($description === '') {
+        return;
+    }
+
+    ?>
+    <section class="landing-product-description bg-white rounded-sm shadow-sm border border-gray-200 p-3 lg:p-4 my-2"
+             aria-labelledby="landing-product-description-heading">
+        <h2 id="landing-product-description-heading" class="text-xl font-bold text-gray-900 mb-4">
+            <?php esc_html_e('Description', 'dimdul-gadget'); ?>
+        </h2>
+        <div class="prose prose-gray max-w-none text-gray-700 woocommerce-product-details__long-description">
+            <?php echo apply_filters('the_content', $description); ?>
+        </div>
+    </section>
+    <?php
+}
+
+/**
+ * Visible product attributes (additional information) for landing checkout.
+ *
+ * @param WC_Product $product Product object.
+ */
+function theme_render_landing_product_additional_information_section($product)
+{
+    if (!$product instanceof WC_Product || !function_exists('wc_display_product_attributes')) {
+        return;
+    }
+
+    ob_start();
+    wc_display_product_attributes($product);
+    $attributes_html = trim(ob_get_clean());
+
+    if ($attributes_html === '') {
+        return;
+    }
+
+    $heading = apply_filters(
+            'woocommerce_product_additional_information_heading',
+            __('Additional information', 'woocommerce')
+    );
+    ?>
+    <section class="landing-product-additional-information bg-white rounded-sm shadow-sm border border-gray-200 p-3 lg:p-4 my-2"
+             aria-labelledby="landing-additional-information-heading">
+        <h2 id="landing-additional-information-heading" class="text-xl font-bold text-gray-900 mb-4">
+            <?php echo esc_html($heading); ?>
+        </h2>
+        <div class="woocommerce-product-attributes-wrapper overflow-x-auto">
+            <?php echo $attributes_html; ?>
+        </div>
+    </section>
+    <?php
+}
+
+/**
+ * Sticky-style CTA: thumb, title, price, and scroll target for checkout or variation form.
+ *
+ * @param WC_Product $product Product object.
+ * @param bool       $is_variable Whether the product is variable.
+ */
+function theme_render_landing_product_cta_section($product, $is_variable)
+{
+    if (!$product instanceof WC_Product) {
+        return;
+    }
+
+    $scroll_fragment = $is_variable ? 'landing-variation-selection' : 'landing-checkout-wrap';
+    $scroll_href = get_permalink() . '#' . $scroll_fragment;
+    $thumb_id = $product->get_image_id();
+    $buy_label = __('Buy now', 'dimdul-gadget');
+    ?>
+    <section class="landing-product-cta bg-white rounded-sm shadow-sm border border-gray-200 p-4 lg:p-6 my-2 lg:sticky lg:bottom-4 lg:z-20"
+             aria-label="<?php echo esc_attr($buy_label); ?>">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+            <?php if ($thumb_id) : ?>
+                <div class="flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
+                    <?php echo wp_kses_post(wp_get_attachment_image($thumb_id, 'thumbnail', false, array('class' => 'w-full h-full object-cover'))); ?>
+                </div>
+            <?php endif; ?>
+            <div class="flex-1 min-w-0">
+                <p class="font-semibold text-gray-900 truncate"><?php echo esc_html($product->get_name()); ?></p>
+                <div class="text-lg font-semibold text-gray-900"><?php echo wp_kses_post($product->get_price_html()); ?></div>
+            </div>
+            <div class="flex-shrink-0">
+                <a href="<?php echo esc_url($scroll_href); ?>"
+                   class="landing-cta-buy-now inline-flex justify-center items-center w-full sm:w-auto rounded-xl bg-gray-900 text-white font-semibold px-6 py-3 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900">
+                    <?php echo esc_html($buy_label); ?>
+                </a>
+            </div>
+        </div>
+    </section>
+    <?php
+}
+
+/**
+ * FAQ block from product meta _eg_product_faqs.
+ *
+ * @param int $product_id Product ID.
+ */
+function theme_render_landing_product_faq_section($product_id)
+{
+    $product_id = absint($product_id);
+    if (!$product_id) {
+        return;
+    }
+
+    $faqs = get_post_meta($product_id, '_eg_product_faqs', true);
+    if (empty($faqs) || !is_array($faqs)) {
+        return;
+    }
+
+    ?>
+    <section class="landing-product-faq bg-white rounded-sm shadow-sm border border-gray-200 p-3 lg:p-4 my-2"
+             aria-labelledby="landing-product-faq-heading">
+        <h2 id="landing-product-faq-heading" class="text-xl font-bold text-gray-900 mb-4">
+            <?php esc_html_e('Frequently asked questions', 'dimdul-gadget'); ?>
+        </h2>
+        <div class="eg-product-faq-landing space-y-2">
+            <?php
+            foreach ($faqs as $faq) {
+                $question = isset($faq['question']) ? $faq['question'] : '';
+                $answer = isset($faq['answer']) ? $faq['answer'] : '';
+
+                if ($question === '' && $answer === '') {
+                    continue;
+                }
+                ?>
+                <details class="eg-product-faq-item border border-gray-200 rounded-xl px-4 py-3 bg-gray-50">
+                    <summary class="font-medium text-gray-900 cursor-pointer"><?php echo esc_html($question); ?></summary>
+                    <div class="eg-product-faq-answer mt-3 text-gray-700 text-sm leading-relaxed">
+                        <?php echo wp_kses_post(wpautop($answer)); ?>
+                    </div>
+                </details>
+                <?php
+            }
+            ?>
+        </div>
+    </section>
+    <?php
+}
+
+/**
+ * WooCommerce reviews list and form for landing (product post context).
+ *
+ * @param WC_Product $product Product object.
+ */
+function theme_render_landing_product_reviews_section($wc_product)
+{
+    if (!$wc_product instanceof WC_Product || !function_exists('wc_get_template')) {
+        return;
+    }
+
+    $product_id = $wc_product->get_id();
+    if (!comments_open($product_id) && get_comments_number($product_id) < 1) {
+        return;
+    }
+
+    global $product, $post;
+
+    $prev_product = $product;
+    $prev_post = $post;
+
+    $product = wc_get_product($product_id);
+    $post = get_post($product_id);
+
+    if (!$post instanceof WP_Post) {
+        $product = $prev_product;
+        $post = $prev_post;
+
+        return;
+    }
+
+    setup_postdata($post);
+
+    ?>
+    <section class="landing-product-reviews bg-white rounded-sm shadow-sm border border-gray-200 p-3 lg:p-4 my-2"
+             aria-label="<?php esc_attr_e('Reviews', 'dimdul-gadget'); ?>">
+        <div class="landing-woocommerce-reviews-inner">
+            <?php wc_get_template('single-product-reviews.php'); ?>
+        </div>
+    </section>
+    <?php
+
+    wp_reset_postdata();
+    $product = $prev_product;
+    $post = $prev_post;
 }
 
 function theme_enqueue_landing_checkout_assets()
@@ -1026,6 +1225,10 @@ function theme_enqueue_landing_checkout_assets()
 
     if ($is_variable) {
         wp_enqueue_script('wc-add-to-cart-variation');
+    }
+
+    if (comments_open($product_id) || $product->get_review_count() > 0) {
+        wp_enqueue_script('comment-reply');
     }
 
     wp_enqueue_script('wc-cart-fragments');

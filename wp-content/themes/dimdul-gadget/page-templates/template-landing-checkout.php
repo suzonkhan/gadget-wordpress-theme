@@ -11,12 +11,12 @@ defined('ABSPATH') || exit;
 get_header();
 ?>
 
-    <main id="primary" class="site-main">
-        <div class="container mx-auto px-4 py-10">
+    <main id="primary" class="site-main py-10">
+        <div class="container">
             <?php
             if (!class_exists('WooCommerce')) :
                 ?>
-                <div class="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3">
+                <div class="bg-red-50 border border-red-200 text-red-700 rounded-sm px-4 py-3">
                     <?php esc_html_e('WooCommerce is required for this landing page.', 'dimdul-gadget'); ?>
                 </div>
             <?php
@@ -26,7 +26,7 @@ get_header();
 
                 if (!$product) :
                     ?>
-                    <div class="bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-xl px-4 py-3">
+                    <div class="bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-sm px-4 py-3">
                         <?php esc_html_e('No valid WooCommerce product is configured for this page. Add a valid product ID to the custom field "landing_product_id".', 'dimdul-gadget'); ?>
                     </div>
                 <?php
@@ -49,18 +49,37 @@ get_header();
                     ?>
 
 
-                    <section class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 lg:p-8">
-                        <div id="landing-status-message" class="hidden mb-4 rounded-xl px-4 py-3 text-sm"></div>
+                    <section id="landing-product-summary"
+                             class="bg-white rounded-sm shadow-sm border border-gray-200 p-3 lg:p-4">
+                        <div id="landing-status-message" class="hidden mb-4 rounded-sm px-4 py-3 text-sm"></div>
 
                         <?php if (function_exists('theme_render_landing_product_summary')) : ?>
                             <?php theme_render_landing_product_summary($product); ?>
                         <?php endif; ?>
-
-
                     </section>
 
+                    <?php if (function_exists('theme_render_landing_product_description_section')) : ?>
+                        <?php theme_render_landing_product_description_section($product); ?>
+                    <?php endif; ?>
+
+                    <?php if (function_exists('theme_render_landing_product_additional_information_section')) : ?>
+                        <?php theme_render_landing_product_additional_information_section($product); ?>
+                    <?php endif; ?>
+
+                    <?php if (function_exists('theme_render_landing_product_cta_section')) : ?>
+                        <?php theme_render_landing_product_cta_section($product, $is_variable); ?>
+                    <?php endif; ?>
+
+                    <?php if (function_exists('theme_render_landing_product_faq_section')) : ?>
+                        <?php theme_render_landing_product_faq_section($product_id); ?>
+                    <?php endif; ?>
+
+                    <?php if (function_exists('theme_render_landing_product_reviews_section')) : ?>
+                        <?php theme_render_landing_product_reviews_section($product); ?>
+                    <?php endif; ?>
+
                     <section id="landing-checkout-wrap"
-                             class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 lg:p-8 <?php echo $checkout_is_ready ? '' : 'hidden'; ?>">
+                             class="my-2 <?php echo $checkout_is_ready ? '' : 'hidden'; ?>">
                         <?php if (function_exists('theme_render_landing_checkout')) : ?>
                             <?php theme_render_landing_checkout(); ?>
                         <?php endif; ?>
