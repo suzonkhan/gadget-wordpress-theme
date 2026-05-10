@@ -541,30 +541,30 @@ function custom_wc_product_cta_shortcode($atts)
     $product = wc_get_product($atts['id']);
 
     ?>
-        <div class="product-cta-wrapper">
-            <div class="container">
-                <div class="product-cta-box">
-                    <div class="product-cta-thumb">
-                        <?php echo $product->get_image('thumbnail'); ?>
+    <div class="product-cta-wrapper">
+        <div class="container">
+            <div class="product-cta-box">
+                <div class="product-cta-thumb">
+                    <?php echo $product->get_image('thumbnail'); ?>
+                </div>
+                <div class="product-cta-info">
+                    <h3 class="product-cta-title">
+                        <?php echo $product->get_name(); ?>
+                    </h3>
+                    <div class="product-cta-price">
+                        <?php echo $product->get_price_html(); ?>
                     </div>
-                    <div class="product-cta-info">
-                        <h3 class="product-cta-title">
-                            <?php echo $product->get_name(); ?>
-                        </h3>
-                        <div class="product-cta-price">
-                            <?php echo $product->get_price_html(); ?>
-                        </div>
-                    </div>
+                </div>
 
-                    <div class="product-cta-button">
-                        <?php
-                        // This triggers the standard "Add to Cart" button and quantity input
-                        woocommerce_template_single_add_to_cart();
-                        ?>
-                    </div>
+                <div class="product-cta-button">
+                    <?php
+                    // This triggers the standard "Add to Cart" button and quantity input
+                    woocommerce_template_single_add_to_cart();
+                    ?>
                 </div>
             </div>
         </div>
+    </div>
 
     <?php
 
@@ -579,74 +579,77 @@ add_shortcode('product_cta', 'custom_wc_product_cta_shortcode');
 // Change WooCommerce "Add to cart" button text to "Buy Now"
 
 // Single product page button text
-add_filter( 'woocommerce_product_single_add_to_cart_text', 'dimdul_single_add_to_cart_text' );
+add_filter('woocommerce_product_single_add_to_cart_text', 'dimdul_single_add_to_cart_text');
 
-function dimdul_single_add_to_cart_text() {
-    return __( 'Buy Now', 'dimdul-gadget' );
+function dimdul_single_add_to_cart_text()
+{
+    return __('Buy Now', 'dimdul-gadget');
 }
 
 
 // Shop / archive / loop product button text
-add_filter( 'woocommerce_product_add_to_cart_text', 'dimdul_loop_add_to_cart_text', 10, 2 );
+add_filter('woocommerce_product_add_to_cart_text', 'dimdul_loop_add_to_cart_text', 10, 2);
 
-function dimdul_loop_add_to_cart_text( $text, $product ) {
+function dimdul_loop_add_to_cart_text($text, $product)
+{
 
-    if ( ! $product ) {
+    if (!$product) {
         return $text;
     }
 
     // Only simple products show "Buy Now"
-    if ( $product->is_type( 'simple' ) ) {
-        return __( 'Buy Now', 'dimdul-gadget' );
+    if ($product->is_type('simple')) {
+        return __('Buy Now', 'dimdul-gadget');
     }
 
     // Variable, grouped, external, etc.
-    return __( 'Details', 'dimdul-gadget' );
+    return __('Details', 'dimdul-gadget');
 }
 
 
-add_filter( 'woocommerce_checkout_fields' , 'custom_reorder_and_minimize_checkout_fields' );
+add_filter('woocommerce_checkout_fields', 'custom_reorder_and_minimize_checkout_fields');
 
-function custom_reorder_and_minimize_checkout_fields( $fields ) {
+function custom_reorder_and_minimize_checkout_fields($fields)
+{
     // 1. Define the fields we want to keep and their new order/properties
     $keep_fields = array(
             'billing_first_name' => array(
-                    'label'       => 'নাম',
+                    'label' => 'নাম',
                     'placeholder' => '',
-                    'priority'    => 10,
-                    'class'       => array('form-row-wide'),
-                    'required'    => true
+                    'priority' => 10,
+                    'class' => array('form-row-wide'),
+                    'required' => true
             ),
             'billing_phone' => array(
-                    'label'       => 'মোবাইল নম্বর',
+                    'label' => 'মোবাইল নম্বর',
                     'placeholder' => '',
-                    'priority'    => 20,
-                    'class'       => array('form-row-wide'),
-                    'required'    => true
+                    'priority' => 20,
+                    'class' => array('form-row-wide'),
+                    'required' => true
             ),
             'billing_email' => array(
-                    'label'       => 'ইমেল',
+                    'label' => 'ইমেল',
                     'placeholder' => '',
-                    'priority'    => 30,
-                    'class'       => array('form-row-wide'),
-                    'required'    => false // Email is now optional
+                    'priority' => 30,
+                    'class' => array('form-row-wide'),
+                    'required' => false // Email is now optional
             ),
             'billing_country' => array(
-                    'type'        => 'hidden',
-                    'label'       => 'দেশ',
+                    'type' => 'hidden',
+                    'label' => 'দেশ',
                     'placeholder' => '',
-                    'priority'    => 30,
-                    'class'       => array('form-row-wide'),
-                    'default'     => 'BD',
-                    'required'    => false // Email is now optional
+                    'priority' => 30,
+                    'class' => array('form-row-wide'),
+                    'default' => 'BD',
+                    'required' => false // Email is now optional
             ),
             'billing_address_1' => array(
-                    'type'        => 'textarea', // Changed from default to textarea
-                    'label'       => 'পূর্ণ ঠিকানা',
+                    'type' => 'textarea', // Changed from default to textarea
+                    'label' => 'পূর্ণ ঠিকানা',
                     'placeholder' => 'আপনার সম্পূর্ণ ঠিকানা এখানে লিখুন...',
-                    'priority'    => 40,
-                    'class'       => array('form-row-wide'),
-                    'required'    => true,
+                    'priority' => 40,
+                    'class' => array('form-row-wide'),
+                    'required' => true,
                     'custom_attributes' => array('rows' => 3) // Controls the height
             )
     );
@@ -655,7 +658,7 @@ function custom_reorder_and_minimize_checkout_fields( $fields ) {
     $fields['billing'] = array();
 
     // 3. Re-insert only our allowed fields with the custom settings
-    foreach ( $keep_fields as $key => $props ) {
+    foreach ($keep_fields as $key => $props) {
         $fields['billing'][$key] = $props;
     }
 
@@ -664,6 +667,7 @@ function custom_reorder_and_minimize_checkout_fields( $fields ) {
 
     return $fields;
 }
+
 // 3. Force the country value to BD during the checkout process
 //add_action('woocommerce_checkout_update_order_review', function($post_data) {
 //    parse_str($post_data, $post_data_array);
@@ -674,7 +678,8 @@ function custom_reorder_and_minimize_checkout_fields( $fields ) {
 /**
  * AJAX Product Search Handler
  */
-function dimdul_gadget_product_search() {
+function dimdul_gadget_product_search()
+{
     // Verify nonce
     if (!wp_verify_nonce($_POST['nonce'], 'product_search_nonce')) {
         wp_die('Security check failed');
@@ -742,464 +747,530 @@ add_action('wp_ajax_nopriv_product_search', 'dimdul_gadget_product_search');
 /**
  * Landing checkout helpers.
  */
-function theme_landing_wc_ready() {
-	return class_exists( 'WooCommerce' ) && function_exists( 'WC' );
+function theme_landing_wc_ready()
+{
+    return class_exists('WooCommerce') && function_exists('WC');
 }
 
-function theme_landing_ensure_cart() {
-	if ( ! theme_landing_wc_ready() ) {
-		return false;
-	}
+function theme_landing_ensure_cart()
+{
+    if (!theme_landing_wc_ready()) {
+        return false;
+    }
 
-	if ( null === WC()->cart && function_exists( 'wc_load_cart' ) ) {
-		wc_load_cart();
-	}
+    if (null === WC()->cart && function_exists('wc_load_cart')) {
+        wc_load_cart();
+    }
 
-	return WC()->cart instanceof WC_Cart;
+    return WC()->cart instanceof WC_Cart;
 }
 
-function theme_get_landing_product_id( $page_id = 0 ) {
-	$page_id = absint( $page_id );
-	if ( ! $page_id ) {
-		$page_id = get_the_ID();
-	}
+function theme_get_landing_product_id($page_id = 0)
+{
+    $page_id = absint($page_id);
+    if (!$page_id) {
+        $page_id = get_the_ID();
+    }
 
-	$product_id = get_post_meta( $page_id, 'landing_product_id', true );
-	return absint( $product_id );
+    $product_id = get_post_meta($page_id, 'landing_product_id', true);
+    return absint($product_id);
 }
 
-function theme_get_landing_product( $product_id ) {
-	if ( ! theme_landing_wc_ready() ) {
-		return false;
-	}
+function theme_get_landing_product($product_id)
+{
+    if (!theme_landing_wc_ready()) {
+        return false;
+    }
 
-	$product_id = absint( $product_id );
-	if ( ! $product_id ) {
-		return false;
-	}
+    $product_id = absint($product_id);
+    if (!$product_id) {
+        return false;
+    }
 
-	$product = wc_get_product( $product_id );
-	if ( ! $product || 'publish' !== get_post_status( $product_id ) ) {
-		return false;
-	}
+    $product = wc_get_product($product_id);
+    if (!$product || 'publish' !== get_post_status($product_id)) {
+        return false;
+    }
 
-	if ( ! $product->is_purchasable() || ! $product->exists() ) {
-		return false;
-	}
+    if (!$product->is_purchasable() || !$product->exists()) {
+        return false;
+    }
 
-	return $product;
+    return $product;
 }
 
-function theme_is_product_in_cart( $product_id, $variation_id = 0 ) {
-	if ( ! theme_landing_ensure_cart() ) {
-		return false;
-	}
+function theme_is_product_in_cart($product_id, $variation_id = 0)
+{
+    if (!theme_landing_ensure_cart()) {
+        return false;
+    }
 
-	$product_id   = absint( $product_id );
-	$variation_id = absint( $variation_id );
+    $product_id = absint($product_id);
+    $variation_id = absint($variation_id);
 
-	foreach ( WC()->cart->get_cart() as $cart_item ) {
-		$cart_product_id   = isset( $cart_item['product_id'] ) ? absint( $cart_item['product_id'] ) : 0;
-		$cart_variation_id = isset( $cart_item['variation_id'] ) ? absint( $cart_item['variation_id'] ) : 0;
+    foreach (WC()->cart->get_cart() as $cart_item) {
+        $cart_product_id = isset($cart_item['product_id']) ? absint($cart_item['product_id']) : 0;
+        $cart_variation_id = isset($cart_item['variation_id']) ? absint($cart_item['variation_id']) : 0;
 
-		if ( $variation_id > 0 ) {
-			if ( $cart_product_id === $product_id && $cart_variation_id === $variation_id ) {
-				return true;
-			}
-		} elseif ( $cart_product_id === $product_id ) {
-			return true;
-		}
-	}
+        if ($variation_id > 0) {
+            if ($cart_product_id === $product_id && $cart_variation_id === $variation_id) {
+                return true;
+            }
+        } elseif ($cart_product_id === $product_id) {
+            return true;
+        }
+    }
 
-	return false;
+    return false;
 }
 
-function theme_get_landing_cart_item_key( $product_id, $variation_id = 0 ) {
-	if ( ! theme_landing_ensure_cart() ) {
-		return '';
-	}
+function theme_get_landing_cart_item_key($product_id, $variation_id = 0)
+{
+    if (!theme_landing_ensure_cart()) {
+        return '';
+    }
 
-	$product_id   = absint( $product_id );
-	$variation_id = absint( $variation_id );
+    $product_id = absint($product_id);
+    $variation_id = absint($variation_id);
 
-	foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
-		$cart_product_id   = isset( $cart_item['product_id'] ) ? absint( $cart_item['product_id'] ) : 0;
-		$cart_variation_id = isset( $cart_item['variation_id'] ) ? absint( $cart_item['variation_id'] ) : 0;
+    foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+        $cart_product_id = isset($cart_item['product_id']) ? absint($cart_item['product_id']) : 0;
+        $cart_variation_id = isset($cart_item['variation_id']) ? absint($cart_item['variation_id']) : 0;
 
-		if ( $variation_id > 0 ) {
-			if ( $cart_product_id === $product_id && $cart_variation_id === $variation_id ) {
-				return $cart_item_key;
-			}
-		} elseif ( $cart_product_id === $product_id ) {
-			return $cart_item_key;
-		}
-	}
+        if ($variation_id > 0) {
+            if ($cart_product_id === $product_id && $cart_variation_id === $variation_id) {
+                return $cart_item_key;
+            }
+        } elseif ($cart_product_id === $product_id) {
+            return $cart_item_key;
+        }
+    }
 
-	return '';
+    return '';
 }
 
-function theme_auto_add_simple_landing_product( $product ) {
-	if ( ! $product instanceof WC_Product || ! $product->is_type( 'simple' ) ) {
-		return;
-	}
+function theme_auto_add_simple_landing_product($product)
+{
+    if (!$product instanceof WC_Product || !$product->is_type('simple')) {
+        return;
+    }
 
-	if ( ! theme_landing_ensure_cart() ) {
-		return;
-	}
+    if (!theme_landing_ensure_cart()) {
+        return;
+    }
 
-	$product_id = $product->get_id();
-	if ( theme_is_product_in_cart( $product_id ) ) {
-		return;
-	}
+    $product_id = $product->get_id();
+    if (theme_is_product_in_cart($product_id)) {
+        return;
+    }
 
-	if ( ! $product->is_in_stock() || ! $product->is_purchasable() ) {
-		return;
-	}
+    if (!$product->is_in_stock() || !$product->is_purchasable()) {
+        return;
+    }
 
-	WC()->cart->add_to_cart( $product_id, 1 );
+    WC()->cart->add_to_cart($product_id, 1);
 }
 
-function theme_render_landing_product_summary( $product ) {
-	if ( ! $product instanceof WC_Product ) {
-		return;
-	}
+function theme_render_landing_product_summary($product)
+{
+    if (!$product instanceof WC_Product) {
+        return;
+    }
 
-	$gallery_ids = $product->get_gallery_image_ids();
-	$image_id    = $product->get_image_id();
-	?>
-	<div class="space-y-4">
-		<div class="space-y-3">
-			<?php if ( $image_id ) : ?>
-				<div class="rounded-2xl overflow-hidden border border-gray-200 bg-gray-50">
-					<?php echo wp_kses_post( wp_get_attachment_image( $image_id, 'large', false, array( 'class' => 'w-full h-auto object-cover' ) ) ); ?>
-				</div>
-			<?php endif; ?>
+    $gallery_ids = $product->get_gallery_image_ids();
+    $image_id = $product->get_image_id();
+    ?>
+    <div class="space-y-4 single-product-main-information">
+        <div class="space-y-3">
+            <?php if ($image_id) : ?>
+                <div class="rounded-2xl overflow-hidden border border-gray-200 bg-gray-50">
+                    <?php echo wp_kses_post(wp_get_attachment_image($image_id, 'large', false, array('class' => 'w-full h-auto object-cover'))); ?>
+                </div>
+            <?php endif; ?>
 
-			<?php if ( ! empty( $gallery_ids ) ) : ?>
-				<div class="grid grid-cols-4 gap-3">
-					<?php foreach ( array_slice( $gallery_ids, 0, 4 ) as $gallery_id ) : ?>
-						<div class="rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
-							<?php echo wp_kses_post( wp_get_attachment_image( $gallery_id, 'thumbnail', false, array( 'class' => 'w-full h-auto object-cover' ) ) ); ?>
-						</div>
-					<?php endforeach; ?>
-				</div>
-			<?php endif; ?>
-		</div>
+            <?php if (!empty($gallery_ids)) : ?>
+                <div class="grid grid-cols-4 gap-3">
+                    <?php foreach (array_slice($gallery_ids, 0, 4) as $gallery_id) : ?>
+                        <div class="rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
+                            <?php echo wp_kses_post(wp_get_attachment_image($gallery_id, 'thumbnail', false, array('class' => 'w-full h-auto object-cover'))); ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900"><?php echo esc_html($product->get_name()); ?></h1>
+            <div class="text-xl font-semibold text-gray-900"><?php echo wp_kses_post($product->get_price_html()); ?></div>
 
-		<h1 class="text-2xl font-bold text-gray-900"><?php echo esc_html( $product->get_name() ); ?></h1>
-		<div class="text-xl font-semibold text-gray-900"><?php echo wp_kses_post( $product->get_price_html() ); ?></div>
+            <?php if ($product->get_short_description()) : ?>
+                <div class="text-gray-600 leading-relaxed">
+                    <?php echo wp_kses_post(wpautop($product->get_short_description())); ?>
+                </div>
+            <?php endif; ?>
 
-		<?php if ( $product->get_short_description() ) : ?>
-			<div class="text-gray-600 leading-relaxed">
-				<?php echo wp_kses_post( wpautop( $product->get_short_description() ) ); ?>
-			</div>
-		<?php endif; ?>
-	</div>
-	<?php
+            <!--Inset Here-->
+            <?php 
+            $is_variable = $product->is_type('variable');
+            $landing_item_key = theme_get_landing_cart_item_key($product->get_id());
+            $landing_quantity = $landing_item_key ? WC()->cart->get_cart_item($landing_item_key)['quantity'] : 1;
+            ?>
+            
+            <?php if ( $is_variable ) : ?>
+                <?php if ( function_exists( 'theme_render_landing_variable_form' ) ) : ?>
+                   <?php theme_render_landing_variable_form( $product ); ?>
+                <?php endif; ?>
+            <?php else : ?>
+                <div class="mt-6">
+                   <h3 class="text-lg font-semibold text-gray-900 mb-3"><?php esc_html_e( 'Quantity', 'dimdul-gadget' ); ?></h3>
+                   <?php if ( function_exists( 'theme_render_landing_quantity_control' ) ) : ?>
+                      <?php theme_render_landing_quantity_control( $landing_item_key, $landing_quantity, true ); ?>
+                   <?php endif; ?>
+                </div>
+            <?php endif; ?>
+
+            <div id="landing-quantity-wrap" class="<?php echo $is_variable ? 'mt-6 hidden' : 'hidden'; ?>">
+                <h3 class="text-lg font-semibold text-gray-900 mb-3"><?php esc_html_e( 'Quantity', 'dimdul-gadget' ); ?></h3>
+                <div id="landing-quantity-control-target"></div>
+            </div>
+        </div>
+        <div class="text-center product-page-right-sidebar">
+            <div class=""><img class="mx-auto mb-3"
+                               src="<?php echo get_template_directory_uri(); ?>/images/brand.png"
+                               alt="Brand Logo"></div>
+            <div class=""><img class="mx-auto mb-3"
+                               src="<?php echo get_template_directory_uri(); ?>/images/free-shipping.png"
+                               alt="Brand Logo"></div>
+            <div class=""><img class="mx-auto mb-3"
+                               src="<?php echo get_template_directory_uri(); ?>/images/warranty.png"
+                               alt="Brand Logo"></div>
+        </div>
+    </div>
+    <?php
 }
 
-function theme_render_landing_variable_form( $wc_product ) {
-	if ( ! $wc_product instanceof WC_Product || ! $wc_product->is_type( 'variable' ) ) {
-		return;
-	}
+function theme_render_landing_variable_form($wc_product)
+{
+    if (!$wc_product instanceof WC_Product || !$wc_product->is_type('variable')) {
+        return;
+    }
 
-	global $product;
-	$previous_product = $product;
-	$product          = wc_get_product( $wc_product->get_id() );
+    global $product;
+    $previous_product = $product;
+    $product = wc_get_product($wc_product->get_id());
 
-	echo '<div class="mt-6 landing-variable-form">';
-	woocommerce_variable_add_to_cart();
-	echo '</div>';
+    echo '<div class="mt-6 landing-variable-form">';
+    woocommerce_variable_add_to_cart();
+    echo '</div>';
 
-	$product = $previous_product;
+    $product = $previous_product;
 }
 
-function theme_render_landing_quantity_control( $cart_item_key = '', $quantity = 1, $visible = true ) {
-	$quantity = max( 0, absint( $quantity ) );
-	$classes  = $visible ? '' : 'hidden';
-	?>
-	<div class="landing-qty-control flex items-center gap-3 <?php echo esc_attr( $classes ); ?>" data-cart-item-key="<?php echo esc_attr( $cart_item_key ); ?>">
-		<button type="button" class="landing-qty-btn landing-qty-minus rounded-xl px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-100">-</button>
-		<input type="number" min="0" step="1" class="landing-qty-input w-24 rounded-xl border border-gray-300 px-3 py-2 text-center" value="<?php echo esc_attr( $quantity ); ?>" />
-		<button type="button" class="landing-qty-btn landing-qty-plus rounded-xl px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-100">+</button>
-	</div>
-	<?php
+function theme_render_landing_quantity_control($cart_item_key = '', $quantity = 1, $visible = true)
+{
+    $quantity = max(0, absint($quantity));
+    $classes = $visible ? '' : 'hidden';
+    ?>
+    <div class="landing-qty-control flex items-center gap-3 <?php echo esc_attr($classes); ?>"
+         data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>">
+        <button type="button"
+                class="landing-qty-btn landing-qty-minus rounded-xl px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-100">
+            -
+        </button>
+        <input type="number" min="0" step="1"
+               class="landing-qty-input w-24 rounded-xl border border-gray-300 px-3 py-2 text-center"
+               value="<?php echo esc_attr($quantity); ?>"/>
+        <button type="button"
+                class="landing-qty-btn landing-qty-plus rounded-xl px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-100">
+            +
+        </button>
+    </div>
+    <?php
 }
 
-function theme_render_landing_checkout() {
-	echo '<div class="landing-checkout-area">';
-	echo '<h2 class="text-2xl font-bold text-gray-900 mb-4">' . esc_html__( 'Complete Your Order', 'dimdul-gadget' ) . '</h2>';
-	echo do_shortcode( '[woocommerce_checkout]' );
-	echo '<wc-order-attribution-inputs></wc-order-attribution-inputs>';
-	echo '</div>';
+function theme_render_landing_checkout()
+{
+    echo '<div class="landing-checkout-area">';
+    echo '<h2 class="text-2xl font-bold text-gray-900 mb-4">' . esc_html__('Complete Your Order', 'dimdul-gadget') . '</h2>';
+    echo do_shortcode('[woocommerce_checkout]');
+    echo '<wc-order-attribution-inputs></wc-order-attribution-inputs>';
+    echo '</div>';
 }
 
-function theme_enqueue_landing_checkout_assets() {
-	if ( ! is_page_template( 'page-templates/template-landing-checkout.php' ) ) {
-		return;
-	}
+function theme_enqueue_landing_checkout_assets()
+{
+    if (!is_page_template('page-templates/template-landing-checkout.php')) {
+        return;
+    }
 
-	if ( ! theme_landing_wc_ready() ) {
-		return;
-	}
+    if (!theme_landing_wc_ready()) {
+        return;
+    }
 
-	$product_id = theme_get_landing_product_id( get_the_ID() );
-	$product    = theme_get_landing_product( $product_id );
+    $product_id = theme_get_landing_product_id(get_the_ID());
+    $product = theme_get_landing_product($product_id);
 
-	if ( ! $product ) {
-		return;
-	}
+    if (!$product) {
+        return;
+    }
 
-	$is_variable = $product->is_type( 'variable' );
-	$is_simple   = $product->is_type( 'simple' );
+    $is_variable = $product->is_type('variable');
+    $is_simple = $product->is_type('simple');
 
-	$cart_item_key = theme_get_landing_cart_item_key( $product_id );
-	$initial_qty   = 1;
+    $cart_item_key = theme_get_landing_cart_item_key($product_id);
+    $initial_qty = 1;
 
-	if ( $cart_item_key && theme_landing_ensure_cart() ) {
-		$cart_item    = WC()->cart->get_cart_item( $cart_item_key );
-		$initial_qty  = ! empty( $cart_item['quantity'] ) ? absint( $cart_item['quantity'] ) : 1;
-	}
+    if ($cart_item_key && theme_landing_ensure_cart()) {
+        $cart_item = WC()->cart->get_cart_item($cart_item_key);
+        $initial_qty = !empty($cart_item['quantity']) ? absint($cart_item['quantity']) : 1;
+    }
 
-	if ( $is_variable ) {
-		wp_enqueue_script( 'wc-add-to-cart-variation' );
-	}
+    if ($is_variable) {
+        wp_enqueue_script('wc-add-to-cart-variation');
+    }
 
-	wp_enqueue_script( 'wc-cart-fragments' );
-	wp_enqueue_script( 'wc-checkout' );
-	wp_enqueue_script(
-		'theme-landing-checkout',
-		get_template_directory_uri() . '/js/landing-checkout.js',
-		array( 'jquery', 'wc-checkout', 'wc-cart-fragments', 'wc-add-to-cart-variation' ),
-		_S_VERSION,
-		true
-	);
+    wp_enqueue_script('wc-cart-fragments');
+    wp_enqueue_script('wc-checkout');
+    wp_enqueue_script(
+            'theme-landing-checkout',
+            get_template_directory_uri() . '/js/landing-checkout.js',
+            array('jquery', 'wc-checkout', 'wc-cart-fragments', 'wc-add-to-cart-variation'),
+            _S_VERSION,
+            true
+    );
 
-	wp_localize_script(
-		'theme-landing-checkout',
-		'themeLandingCheckout',
-		array(
-			'ajax_url'      => admin_url( 'admin-ajax.php' ),
-			'nonce'         => wp_create_nonce( 'theme_landing_checkout_nonce' ),
-			'product_id'    => $product_id,
-			'is_variable'   => $is_variable,
-			'is_simple'     => $is_simple,
-			'cart_item_key' => $cart_item_key,
-			'initial_qty'   => $initial_qty,
-			'strings'       => array(
-				'select_variation' => __( 'Please select all variation options.', 'dimdul-gadget' ),
-				'adding'           => __( 'Adding...', 'dimdul-gadget' ),
-				'added'            => __( 'Product added. You can complete checkout below.', 'dimdul-gadget' ),
-				'add_error'        => __( 'Unable to add product. Please try again.', 'dimdul-gadget' ),
-				'qty_updated'      => __( 'Quantity updated.', 'dimdul-gadget' ),
-				'qty_error'        => __( 'Unable to update quantity. Please try again.', 'dimdul-gadget' ),
-				'removed'          => __( 'Product removed from cart.', 'dimdul-gadget' ),
-				'variation_ready'  => __( 'Variation selected. You can now add to cart.', 'dimdul-gadget' ),
-			),
-		)
-	);
-}
-add_action( 'wp_enqueue_scripts', 'theme_enqueue_landing_checkout_assets', 30 );
-
-function theme_sanitize_landing_attributes( $raw_attributes ) {
-	$attributes = array();
-
-	if ( ! is_array( $raw_attributes ) ) {
-		return $attributes;
-	}
-
-	foreach ( $raw_attributes as $key => $value ) {
-		$clean_key = wc_clean( wp_unslash( $key ) );
-		$clean_val = wc_clean( wp_unslash( $value ) );
-
-		if ( 0 !== strpos( $clean_key, 'attribute_' ) ) {
-			continue;
-		}
-
-		$attributes[ $clean_key ] = $clean_val;
-	}
-
-	return $attributes;
+    wp_localize_script(
+            'theme-landing-checkout',
+            'themeLandingCheckout',
+            array(
+                    'ajax_url' => admin_url('admin-ajax.php'),
+                    'nonce' => wp_create_nonce('theme_landing_checkout_nonce'),
+                    'product_id' => $product_id,
+                    'is_variable' => $is_variable,
+                    'is_simple' => $is_simple,
+                    'cart_item_key' => $cart_item_key,
+                    'initial_qty' => $initial_qty,
+                    'strings' => array(
+                            'select_variation' => __('Please select all variation options.', 'dimdul-gadget'),
+                            'adding' => __('Adding...', 'dimdul-gadget'),
+                            'added' => __('Product added. You can complete checkout below.', 'dimdul-gadget'),
+                            'add_error' => __('Unable to add product. Please try again.', 'dimdul-gadget'),
+                            'qty_updated' => __('Quantity updated.', 'dimdul-gadget'),
+                            'qty_error' => __('Unable to update quantity. Please try again.', 'dimdul-gadget'),
+                            'removed' => __('Product removed from cart.', 'dimdul-gadget'),
+                            'variation_ready' => __('Variation selected. You can now add to cart.', 'dimdul-gadget'),
+                    ),
+            )
+    );
 }
 
-function theme_ajax_landing_add_to_cart() {
-	if ( ! theme_landing_wc_ready() ) {
-		wp_send_json_error( array( 'message' => __( 'WooCommerce is not available.', 'dimdul-gadget' ) ), 400 );
-	}
+add_action('wp_enqueue_scripts', 'theme_enqueue_landing_checkout_assets', 30);
 
-	check_ajax_referer( 'theme_landing_checkout_nonce', 'nonce' );
+function theme_sanitize_landing_attributes($raw_attributes)
+{
+    $attributes = array();
 
-	if ( function_exists( 'woocommerce_maybe_define_constant' ) ) {
-		woocommerce_maybe_define_constant( 'WOOCOMMERCE_CART', true );
-	}
+    if (!is_array($raw_attributes)) {
+        return $attributes;
+    }
 
-	if ( ! theme_landing_ensure_cart() ) {
-		wp_send_json_error( array( 'message' => __( 'Cart is not ready.', 'dimdul-gadget' ) ), 400 );
-	}
+    foreach ($raw_attributes as $key => $value) {
+        $clean_key = wc_clean(wp_unslash($key));
+        $clean_val = wc_clean(wp_unslash($value));
 
-	$product_id   = isset( $_POST['product_id'] ) ? absint( wp_unslash( $_POST['product_id'] ) ) : 0;
-	$variation_id = isset( $_POST['variation_id'] ) ? absint( wp_unslash( $_POST['variation_id'] ) ) : 0;
-	$quantity     = isset( $_POST['quantity'] ) ? wc_stock_amount( wp_unslash( $_POST['quantity'] ) ) : 1;
-	$attributes   = isset( $_POST['attributes'] ) ? theme_sanitize_landing_attributes( $_POST['attributes'] ) : array();
+        if (0 !== strpos($clean_key, 'attribute_')) {
+            continue;
+        }
 
-	$product = theme_get_landing_product( $product_id );
+        $attributes[$clean_key] = $clean_val;
+    }
 
-	if ( ! $product ) {
-		wp_send_json_error( array( 'message' => __( 'Invalid product.', 'dimdul-gadget' ) ), 400 );
-	}
-
-	if ( $quantity < 1 ) {
-		$quantity = 1;
-	}
-
-	if ( $product->is_type( 'simple' ) ) {
-		if ( ! $product->is_in_stock() ) {
-			wp_send_json_error( array( 'message' => __( 'This product is out of stock.', 'dimdul-gadget' ) ), 400 );
-		}
-
-		$cart_item_key = WC()->cart->add_to_cart( $product_id, $quantity );
-		if ( ! $cart_item_key ) {
-			wp_send_json_error( array( 'message' => __( 'Could not add product to cart.', 'dimdul-gadget' ) ), 400 );
-		}
-
-		WC()->cart->calculate_totals();
-
-		wp_send_json_success(
-			array(
-				'message'       => __( 'Product added successfully.', 'dimdul-gadget' ),
-				'cart_item_key' => $cart_item_key,
-				'quantity'      => $quantity,
-			)
-		);
-	}
-
-	if ( ! $product->is_type( 'variable' ) ) {
-		wp_send_json_error( array( 'message' => __( 'Unsupported product type.', 'dimdul-gadget' ) ), 400 );
-	}
-
-	$variation = wc_get_product( $variation_id );
-	if ( ! $variation || ! $variation instanceof WC_Product_Variation ) {
-		wp_send_json_error( array( 'message' => __( 'Please select a valid variation.', 'dimdul-gadget' ) ), 400 );
-	}
-
-	if ( absint( $variation->get_parent_id() ) !== $product_id ) {
-		wp_send_json_error( array( 'message' => __( 'Variation does not belong to this product.', 'dimdul-gadget' ) ), 400 );
-	}
-
-	if ( ! $variation->is_purchasable() || ! $variation->is_in_stock() ) {
-		wp_send_json_error( array( 'message' => __( 'Selected variation is unavailable.', 'dimdul-gadget' ) ), 400 );
-	}
-
-	// Keep one landing variation in cart for this parent product.
-	foreach ( WC()->cart->get_cart() as $existing_key => $cart_item ) {
-		$cart_product_id = isset( $cart_item['product_id'] ) ? absint( $cart_item['product_id'] ) : 0;
-		if ( $cart_product_id === $product_id ) {
-			WC()->cart->remove_cart_item( $existing_key );
-		}
-	}
-
-	$cart_item_key = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $attributes );
-	if ( ! $cart_item_key ) {
-		wp_send_json_error( array( 'message' => __( 'Could not add selected variation.', 'dimdul-gadget' ) ), 400 );
-	}
-
-	WC()->cart->calculate_totals();
-
-	wp_send_json_success(
-		array(
-			'message'       => __( 'Variation added successfully.', 'dimdul-gadget' ),
-			'cart_item_key' => $cart_item_key,
-			'quantity'      => $quantity,
-		)
-	);
+    return $attributes;
 }
-add_action( 'wp_ajax_landing_add_to_cart', 'theme_ajax_landing_add_to_cart' );
-add_action( 'wp_ajax_nopriv_landing_add_to_cart', 'theme_ajax_landing_add_to_cart' );
 
-function theme_ajax_landing_update_qty() {
-	if ( ! theme_landing_wc_ready() ) {
-		wp_send_json_error( array( 'message' => __( 'WooCommerce is not available.', 'dimdul-gadget' ) ), 400 );
-	}
+function theme_ajax_landing_add_to_cart()
+{
+    if (!theme_landing_wc_ready()) {
+        wp_send_json_error(array('message' => __('WooCommerce is not available.', 'dimdul-gadget')), 400);
+    }
 
-	check_ajax_referer( 'theme_landing_checkout_nonce', 'nonce' );
+    check_ajax_referer('theme_landing_checkout_nonce', 'nonce');
 
-	if ( function_exists( 'woocommerce_maybe_define_constant' ) ) {
-		woocommerce_maybe_define_constant( 'WOOCOMMERCE_CART', true );
-	}
+    if (function_exists('woocommerce_maybe_define_constant')) {
+        woocommerce_maybe_define_constant('WOOCOMMERCE_CART', true);
+    }
 
-	if ( ! theme_landing_ensure_cart() ) {
-		wp_send_json_error( array( 'message' => __( 'Cart is not ready.', 'dimdul-gadget' ) ), 400 );
-	}
+    if (!theme_landing_ensure_cart()) {
+        wp_send_json_error(array('message' => __('Cart is not ready.', 'dimdul-gadget')), 400);
+    }
 
-	$product_id    = isset( $_POST['product_id'] ) ? absint( wp_unslash( $_POST['product_id'] ) ) : 0;
-	$cart_item_key = isset( $_POST['cart_item_key'] ) ? sanitize_text_field( wp_unslash( $_POST['cart_item_key'] ) ) : '';
-	$quantity      = isset( $_POST['quantity'] ) ? max( 0, wc_stock_amount( wp_unslash( $_POST['quantity'] ) ) ) : 0;
+    $product_id = isset($_POST['product_id']) ? absint(wp_unslash($_POST['product_id'])) : 0;
+    $variation_id = isset($_POST['variation_id']) ? absint(wp_unslash($_POST['variation_id'])) : 0;
+    $quantity = isset($_POST['quantity']) ? wc_stock_amount(wp_unslash($_POST['quantity'])) : 1;
+    $attributes = isset($_POST['attributes']) ? theme_sanitize_landing_attributes($_POST['attributes']) : array();
 
-	if ( ! $cart_item_key ) {
-		$cart_item_key = theme_get_landing_cart_item_key( $product_id );
-	}
+    $product = theme_get_landing_product($product_id);
 
-	if ( ! $cart_item_key ) {
-		wp_send_json_error( array( 'message' => __( 'Cart item not found.', 'dimdul-gadget' ) ), 404 );
-	}
+    if (!$product) {
+        wp_send_json_error(array('message' => __('Invalid product.', 'dimdul-gadget')), 400);
+    }
 
-	$cart_item = WC()->cart->get_cart_item( $cart_item_key );
-	if ( empty( $cart_item ) ) {
-		wp_send_json_error( array( 'message' => __( 'Cart item does not exist.', 'dimdul-gadget' ) ), 404 );
-	}
+    if ($quantity < 1) {
+        $quantity = 1;
+    }
 
-	if ( 0 === $quantity ) {
-		WC()->cart->remove_cart_item( $cart_item_key );
-		WC()->cart->calculate_totals();
-		wp_send_json_success(
-			array(
-				'removed'       => true,
-				'quantity'      => 0,
-				'cart_item_key' => '',
-				'message'       => __( 'Product removed from cart.', 'dimdul-gadget' ),
-			)
-		);
-	}
+    if ($product->is_type('simple')) {
+        if (!$product->is_in_stock()) {
+            wp_send_json_error(array('message' => __('This product is out of stock.', 'dimdul-gadget')), 400);
+        }
 
-	$updated = WC()->cart->set_quantity( $cart_item_key, $quantity, true );
-	if ( false === $updated ) {
-		wp_send_json_error( array( 'message' => __( 'Could not update quantity.', 'dimdul-gadget' ) ), 400 );
-	}
+        $cart_item_key = WC()->cart->add_to_cart($product_id, $quantity);
+        if (!$cart_item_key) {
+            wp_send_json_error(array('message' => __('Could not add product to cart.', 'dimdul-gadget')), 400);
+        }
 
-	WC()->cart->calculate_totals();
+        WC()->cart->calculate_totals();
 
-	wp_send_json_success(
-		array(
-			'removed'       => false,
-			'quantity'      => $quantity,
-			'cart_item_key' => $cart_item_key,
-			'message'       => __( 'Quantity updated.', 'dimdul-gadget' ),
-		)
-	);
+        wp_send_json_success(
+                array(
+                        'message' => __('Product added successfully.', 'dimdul-gadget'),
+                        'cart_item_key' => $cart_item_key,
+                        'quantity' => $quantity,
+                )
+        );
+    }
+
+    if (!$product->is_type('variable')) {
+        wp_send_json_error(array('message' => __('Unsupported product type.', 'dimdul-gadget')), 400);
+    }
+
+    $variation = wc_get_product($variation_id);
+    if (!$variation || !$variation instanceof WC_Product_Variation) {
+        wp_send_json_error(array('message' => __('Please select a valid variation.', 'dimdul-gadget')), 400);
+    }
+
+    if (absint($variation->get_parent_id()) !== $product_id) {
+        wp_send_json_error(array('message' => __('Variation does not belong to this product.', 'dimdul-gadget')), 400);
+    }
+
+    if (!$variation->is_purchasable() || !$variation->is_in_stock()) {
+        wp_send_json_error(array('message' => __('Selected variation is unavailable.', 'dimdul-gadget')), 400);
+    }
+
+    // Keep one landing variation in cart for this parent product.
+    foreach (WC()->cart->get_cart() as $existing_key => $cart_item) {
+        $cart_product_id = isset($cart_item['product_id']) ? absint($cart_item['product_id']) : 0;
+        if ($cart_product_id === $product_id) {
+            WC()->cart->remove_cart_item($existing_key);
+        }
+    }
+
+    $cart_item_key = WC()->cart->add_to_cart($product_id, $quantity, $variation_id, $attributes);
+    if (!$cart_item_key) {
+        wp_send_json_error(array('message' => __('Could not add selected variation.', 'dimdul-gadget')), 400);
+    }
+
+    WC()->cart->calculate_totals();
+
+    wp_send_json_success(
+            array(
+                    'message' => __('Variation added successfully.', 'dimdul-gadget'),
+                    'cart_item_key' => $cart_item_key,
+                    'quantity' => $quantity,
+            )
+    );
 }
-add_action( 'wp_ajax_landing_update_qty', 'theme_ajax_landing_update_qty' );
-add_action( 'wp_ajax_nopriv_landing_update_qty', 'theme_ajax_landing_update_qty' );
 
-function theme_ajax_landing_get_checkout_html() {
-	if ( ! theme_landing_wc_ready() ) {
-		wp_send_json_error( array( 'message' => __( 'WooCommerce is not available.', 'dimdul-gadget' ) ), 400 );
-	}
+add_action('wp_ajax_landing_add_to_cart', 'theme_ajax_landing_add_to_cart');
+add_action('wp_ajax_nopriv_landing_add_to_cart', 'theme_ajax_landing_add_to_cart');
 
-	check_ajax_referer( 'theme_landing_checkout_nonce', 'nonce' );
+function theme_ajax_landing_update_qty()
+{
+    if (!theme_landing_wc_ready()) {
+        wp_send_json_error(array('message' => __('WooCommerce is not available.', 'dimdul-gadget')), 400);
+    }
 
-	if ( ! theme_landing_ensure_cart() ) {
-		wp_send_json_error( array( 'message' => __( 'Cart is not ready.', 'dimdul-gadget' ) ), 400 );
-	}
+    check_ajax_referer('theme_landing_checkout_nonce', 'nonce');
 
-	ob_start();
-	theme_render_landing_checkout();
-	$checkout_html = ob_get_clean();
+    if (function_exists('woocommerce_maybe_define_constant')) {
+        woocommerce_maybe_define_constant('WOOCOMMERCE_CART', true);
+    }
 
-	wp_send_json_success(
-		array(
-			'checkout_html' => $checkout_html,
-		)
-	);
+    if (!theme_landing_ensure_cart()) {
+        wp_send_json_error(array('message' => __('Cart is not ready.', 'dimdul-gadget')), 400);
+    }
+
+    $product_id = isset($_POST['product_id']) ? absint(wp_unslash($_POST['product_id'])) : 0;
+    $cart_item_key = isset($_POST['cart_item_key']) ? sanitize_text_field(wp_unslash($_POST['cart_item_key'])) : '';
+    $quantity = isset($_POST['quantity']) ? max(0, wc_stock_amount(wp_unslash($_POST['quantity']))) : 0;
+
+    if (!$cart_item_key) {
+        $cart_item_key = theme_get_landing_cart_item_key($product_id);
+    }
+
+    if (!$cart_item_key) {
+        wp_send_json_error(array('message' => __('Cart item not found.', 'dimdul-gadget')), 404);
+    }
+
+    $cart_item = WC()->cart->get_cart_item($cart_item_key);
+    if (empty($cart_item)) {
+        wp_send_json_error(array('message' => __('Cart item does not exist.', 'dimdul-gadget')), 404);
+    }
+
+    if (0 === $quantity) {
+        WC()->cart->remove_cart_item($cart_item_key);
+        WC()->cart->calculate_totals();
+        wp_send_json_success(
+                array(
+                        'removed' => true,
+                        'quantity' => 0,
+                        'cart_item_key' => '',
+                        'message' => __('Product removed from cart.', 'dimdul-gadget'),
+                )
+        );
+    }
+
+    $updated = WC()->cart->set_quantity($cart_item_key, $quantity, true);
+    if (false === $updated) {
+        wp_send_json_error(array('message' => __('Could not update quantity.', 'dimdul-gadget')), 400);
+    }
+
+    WC()->cart->calculate_totals();
+
+    wp_send_json_success(
+            array(
+                    'removed' => false,
+                    'quantity' => $quantity,
+                    'cart_item_key' => $cart_item_key,
+                    'message' => __('Quantity updated.', 'dimdul-gadget'),
+            )
+    );
 }
-add_action( 'wp_ajax_landing_get_checkout_html', 'theme_ajax_landing_get_checkout_html' );
-add_action( 'wp_ajax_nopriv_landing_get_checkout_html', 'theme_ajax_landing_get_checkout_html' );
+
+add_action('wp_ajax_landing_update_qty', 'theme_ajax_landing_update_qty');
+add_action('wp_ajax_nopriv_landing_update_qty', 'theme_ajax_landing_update_qty');
+
+function theme_ajax_landing_get_checkout_html()
+{
+    if (!theme_landing_wc_ready()) {
+        wp_send_json_error(array('message' => __('WooCommerce is not available.', 'dimdul-gadget')), 400);
+    }
+
+    check_ajax_referer('theme_landing_checkout_nonce', 'nonce');
+
+    if (!theme_landing_ensure_cart()) {
+        wp_send_json_error(array('message' => __('Cart is not ready.', 'dimdul-gadget')), 400);
+    }
+
+    ob_start();
+    theme_render_landing_checkout();
+    $checkout_html = ob_get_clean();
+
+    wp_send_json_success(
+            array(
+                    'checkout_html' => $checkout_html,
+            )
+    );
+}
+
+add_action('wp_ajax_landing_get_checkout_html', 'theme_ajax_landing_get_checkout_html');
+add_action('wp_ajax_nopriv_landing_get_checkout_html', 'theme_ajax_landing_get_checkout_html');

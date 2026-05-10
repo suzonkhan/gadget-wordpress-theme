@@ -56,23 +56,7 @@ get_header();
 							<?php theme_render_landing_product_summary( $product ); ?>
 						<?php endif; ?>
 
-						<?php if ( $is_variable ) : ?>
-							<?php if ( function_exists( 'theme_render_landing_variable_form' ) ) : ?>
-								<?php theme_render_landing_variable_form( $product ); ?>
-							<?php endif; ?>
-						<?php else : ?>
-							<div class="mt-6">
-								<h3 class="text-lg font-semibold text-gray-900 mb-3"><?php esc_html_e( 'Quantity', 'dimdul-gadget' ); ?></h3>
-								<?php if ( function_exists( 'theme_render_landing_quantity_control' ) ) : ?>
-									<?php theme_render_landing_quantity_control( $landing_item_key, $landing_quantity, true ); ?>
-								<?php endif; ?>
-							</div>
-						<?php endif; ?>
 
-						<div id="landing-quantity-wrap" class="<?php echo $is_variable ? 'mt-6 hidden' : 'hidden'; ?>">
-							<h3 class="text-lg font-semibold text-gray-900 mb-3"><?php esc_html_e( 'Quantity', 'dimdul-gadget' ); ?></h3>
-							<div id="landing-quantity-control-target"></div>
-						</div>
 					</section>
 
 					<section id="landing-checkout-wrap" class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 lg:p-8 <?php echo $checkout_is_ready ? '' : 'hidden'; ?>">
