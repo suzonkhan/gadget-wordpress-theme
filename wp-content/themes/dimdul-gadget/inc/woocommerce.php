@@ -672,64 +672,69 @@ function custom_reorder_and_minimize_checkout_fields( $fields ) {
 //});
 
 /**
- * AJAX handler for getting variation data
+ * AJAX Product Search Handler
  */
-function dimdul_gadget_get_variation_data() {
-    check_ajax_referer('add_to_cart_nonce', 'nonce');
-    
-    $product_id = intval($_POST['product_id']);
-    $variations = $_POST['variations'];
-    
-    $product = wc_get_product($product_id);
-    
-    if (!$product || !$product->is_type('variable')) {
-        wp_send_json_error(array('message' => 'Invalid product'));
+function dimdul_gadget_product_search() {
+    // Verify nonce
+    if (!wp_verify_nonce($_POST['nonce'], 'product_search_nonce')) {
+        wp_die('Security check failed');
     }
-    
-    $data_store = WC_Data_Store::load('product-variation');
-    $matching_variations = $data_store->find_matching_variations($product, $variations);
-    
-    if (empty($matching_variations)) {
-        wp_send_json_error(array('message' => 'No matching variation found'));
+
+    // Get search query
+    $query = sanitize_text_field($_POST['query']);
+
+    if (empty($query)) {
+        wp_send_json_error('No search query provided');
     }
-    
-    $variation_id = $matching_variations[0];
-    $variation = wc_get_product($variation_id);
-    
-    if (!$variation) {
-        wp_send_json_error(array('message' => 'Variation not found'));
-    }
-    
-    $response = array(
-        'variation_id' => $variation_id,
-        'price' => $variation->get_price_html(),
-        'regular_price' => wc_price($variation->get_regular_price()),
-        'stock_status' => $variation->is_in_stock() ? __('In stock', 'woocommerce') : __('Out of stock', 'woocommerce'),
-        'is_in_stock' => $variation->is_in_stock(),
-        'is_purchasable' => $variation->is_purchasable(),
-        'max_quantity' => $variation->get_max_purchase_quantity(),
-        'attributes' => $variation->get_attributes()
+
+    // Search products
+    $args = array(
+            'post_type' => 'product',
+            'posts_per_page' => 8,
+            's' => $query,
+            'meta_query' => array(
+                    'relation' => 'OR',
+                    array(
+                            'key' => '_sku',
+                            'value' => $query,
+                            'compare' => 'LIKE'
+                    )
+            )
     );
-    
-    wp_send_json_success($response);
-}
 
-add_action('wp_ajax_get_variation_data', 'dimdul_gadget_get_variation_data');
-add_action('wp_ajax_nopriv_get_variation_data', 'dimdul_gadget_get_variation_data');
+    $products = new WP_Query($args);
 
-/**
- * Enqueue scripts and localize AJAX variables for landing page
- */
-function dimdul_gadget_enqueue_landing_scripts() {
-    // Only enqueue on landing page template
-    if (is_page_template('page-product-landing.php')) {
-        wp_enqueue_script('landing-page-js', get_template_directory_uri() . '/js/landing-page.js', array('jquery'), _S_VERSION, true);
-        
-        wp_localize_script('landing-page-js', 'landing_ajax', array(
-            'ajax_url' => admin_url('admin-ajax.php'),
-            'nonce_add_to_cart' => wp_create_nonce('add_to_cart_nonce')
-        ));
+    $html = '';
+
+    if ($products->have_posts()) {
+        while ($products->have_posts()) {
+            $products->the_post();
+            global $product;
+
+            $product_id = get_the_ID();
+            $product_title = get_the_title();
+            $product_url = get_permalink();
+            $product_price = $product->get_price_html();
+            $product_image = get_the_post_thumbnail_url($product_id, 'thumbnail') ?: wc_placeholder_img_src();
+
+            $html .= '<div class="search-result-item" data-url="' . esc_url($product_url) . '">';
+            $html .= '<div class="search-result-image">';
+            $html .= '<img src="' . esc_url($product_image) . '" alt="' . esc_attr($product_title) . '">';
+            $html .= '</div>';
+            $html .= '<div class="search-result-content">';
+            $html .= '<h4 class="search-result-title">' . esc_html($product_title) . '</h4>';
+            $html .= '<div class="search-result-price">' . $product_price . '</div>';
+            $html .= '</div>';
+            $html .= '</div>';
+        }
+    } else {
+        $html = '<div class="search-no-results">No products found</div>';
     }
+
+    wp_reset_postdata();
+
+    wp_send_json_success(array('html' => $html));
 }
 
-add_action('wp_enqueue_scripts', 'dimdul_gadget_enqueue_landing_scripts');
+add_action('wp_ajax_product_search', 'dimdul_gadget_product_search');
+add_action('wp_ajax_nopriv_product_search', 'dimdul_gadget_product_search');
