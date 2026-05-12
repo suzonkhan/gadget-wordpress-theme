@@ -23,15 +23,16 @@ get_header();
             <div class="container">
                 <div class="hero-card-wrapper">
                     <div class="hero-card">
-                        <img src="https://images.unsplash.com/photo-1610438235354-a6ae5528385c?w=500&q=80" alt="Earbuds"
+                        <img src="https://images.unsplash.com/photo-1703493252669-5966d6361e32?w=500&q=80"
+                             alt="Air Fryer"
                              class="  aspect-square w-full"/>
                         <div class="img-overlay absolute inset-0"></div>
                         <div class="absolute bottom-0 left-0 p-3 md:p-4 text-white"><p class="text-xs text-gray-300">
-                                Earbuds</p>
+                                সব ধরণের</p>
                             <p style="font-family:'Syne',sans-serif;font-size:clamp(14px,2vw,18px);font-weight:700;">
-                                EB525</p></div>
-                        <span class="ribbon absolute top-2 left-2">NEW</span>
+                                কুরআন মাজীদ</p></div>
                     </div>
+
                     <div class="hero-card">
                         <img src="https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=700&q=80" alt="Speaker"
                              class="  aspect-square w-full"/>
@@ -40,7 +41,7 @@ get_header();
                             <p class="text-xs font-semibold uppercase tracking-widest text-gray-300 mb-1">New
                                 Arrival</p>
                             <h2 style="font-family:'Syne',sans-serif;font-size:clamp(20px,3vw,32px);font-weight:800;line-height:1.1;">
-                                Portable<br/>Speaker</h2>
+                                Portable Speaker</h2>
                             <p class="text-xs text-gray-300 mt-1 mb-3">Portable voice control sound</p>
                             <a class="bg-white text-black text-xs font-bold px-5 py-2 rounded-full hover:bg-gray-100 transition-colors"
                                style="font-family:'Syne',sans-serif;">SHOP NOW →
@@ -48,34 +49,34 @@ get_header();
                         </div>
                     </div>
                     <div class="hero-card">
-                        <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500&q=80" alt="iPad"
+                        <img src="https://images.unsplash.com/photo-1744488872461-02aea94a627f?w=500&q=80" alt="Earbuds"
                              class="  aspect-square w-full"/>
                         <div class="img-overlay absolute inset-0"></div>
                         <div class="absolute bottom-0 left-0 p-3 md:p-4 text-white"><p class="text-xs text-gray-300">
-                                Apple</p>
+                                হালাল</p>
                             <p style="font-family:'Syne',sans-serif;font-size:clamp(14px,2vw,18px);font-weight:700;">
-                                iPad
-                                Pro</p></div>
+                                আতর</p></div>
+                        <span class="ribbon absolute top-2 left-2">NEW</span>
+                    </div>
+                    <div class="hero-card">
+                        <img src="https://images.unsplash.com/photo-1585849837997-ac13cb616ff7?w=500&q=80" alt="iPad"
+                             class="  aspect-square w-full"/>
+                        <div class="img-overlay absolute inset-0"></div>
+                        <div class="absolute bottom-0 left-0 p-3 md:p-4 text-white"><p class="text-xs text-gray-300">
+                                দরসী  / গায়রে দরসী </p>
+                            <p style="font-family:'Syne',sans-serif;font-size:clamp(14px,2vw,18px);font-weight:700;">
+                                কিতাব</p></div>
                     </div>
 
+
                     <div class="hero-card">
-                        <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=500&q=80"
-                             alt="Air Fryer"
-                             class="  aspect-square w-full"/>
-                        <div class="img-overlay absolute inset-0"></div>
-                        <div class="absolute bottom-0 left-0 p-3 md:p-4 text-white"><p class="text-xs text-gray-300">Air
-                                Fryer</p>
-                            <p style="font-family:'Syne',sans-serif;font-size:clamp(14px,2vw,18px);font-weight:700;">
-                                NA120</p></div>
-                    </div>
-                    <div class="hero-card">
-                        <img src="https://images.unsplash.com/photo-1620625515032-6ed0c1790c75?w=500&q=80" alt="Watch"
+                        <img src="https://images.unsplash.com/photo-1777891258039-54963151d2d0?w=500&q=80" alt="Watch"
                              class="  aspect-square w-full"/>
                         <div class="img-overlay absolute inset-0"></div>
                         <div class="absolute bottom-0 left-0 p-3 md:p-4 text-white"><p class="text-xs text-gray-300">
-                                Fastrack</p>
+                                ফ্রেশ</p>
                             <p style="font-family:'Syne',sans-serif;font-size:clamp(14px,2vw,18px);font-weight:700;">
-                                MYND</p></div>
+                                খেজুর</p></div>
                         <span class="ribbon pulse absolute top-2 left-2">SALE</span>
                     </div>
                 </div>
@@ -91,7 +92,7 @@ get_header();
                     <div><span class="section-tag">BROWSE</span>
                         <h2 style="font-family:'Syne',sans-serif;font-size:clamp(16px,2.5vw,22px);font-weight:700;">
                             Categories</h2></div>
-                    <a href="#" class="text-xs font-semibold text-red-600 underline underline-offset-2">See All</a>
+                    <a href="#" class="text-xs font-semibold text-[var(--accent)] underline underline-offset-2">See All</a>
                 </div>
                 <div class="">
                     <?php
@@ -147,8 +148,8 @@ get_header();
             <div class="container">
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-center">
                     <div class="flex flex-col items-center gap-2">
-                        <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-red-600" fill="none"
+                        <div class="w-12 h-12 rounded-2xl bg-[var(--accent-light)] flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-[var(--accent)]" fill="none"
                                  viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                       d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
@@ -158,8 +159,8 @@ get_header();
                             <p class="text-xs text-gray-400">On orders over $99</p></div>
                     </div>
                     <div class="flex flex-col items-center gap-2">
-                        <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-red-600" fill="none"
+                        <div class="w-12 h-12 rounded-2xl bg-[var(--accent-light)] flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-[var(--accent)]" fill="none"
                                  viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                       d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
@@ -169,8 +170,8 @@ get_header();
                             <p class="text-xs text-gray-400">30-day return policy</p></div>
                     </div>
                     <div class="flex flex-col items-center gap-2">
-                        <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-red-600" fill="none"
+                        <div class="w-12 h-12 rounded-2xl bg-[var(--accent-light)] flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-[var(--accent)]" fill="none"
                                  viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                       d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
@@ -180,8 +181,8 @@ get_header();
                             <p class="text-xs text-gray-400">SSL encrypted checkout</p></div>
                     </div>
                     <div class="flex flex-col items-center gap-2">
-                        <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-red-600" fill="none"
+                        <div class="w-12 h-12 rounded-2xl bg-[var(--accent-light)] flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-[var(--accent)]" fill="none"
                                  viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                       d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
@@ -266,7 +267,7 @@ get_header();
                         <h2 style="font-family:'Syne',sans-serif;font-size:clamp(16px,2.5vw,22px);font-weight:700;">
                             Trending
                             Now</h2></div>
-                    <a href="#" class="text-xs font-semibold text-red-600 underline underline-offset-2">See All</a>
+                    <a href="#" class="text-xs font-semibold text-[var(--accent)] underline underline-offset-2">See All</a>
                 </div>
 <!--                <div class="flex flex-wrap gap-2 mb-4">-->
 <!--                    <button class="cat-pill text-xs font-semibold px-4 py-1.5 rounded-full border border-red-600 bg-red-600 text-white active">-->

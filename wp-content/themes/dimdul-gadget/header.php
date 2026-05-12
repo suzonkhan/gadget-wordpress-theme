@@ -63,7 +63,7 @@
                         <!-- Account -->
 
                         <a href="<?php echo esc_url(wc_get_page_permalink('myaccount')); ?>"
-                           class="flex gap-2  items-center text-gray-600 hover:text-vibrant-orange cursor-pointer transition-colors">
+                           class="flex gap-2  items-center text-white hover:text-vibrant-orange cursor-pointer transition-colors">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                       d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -78,7 +78,7 @@
                         <!-- Cart Summary -->
                         <a class="cart-customlocation" href="<?php echo esc_url(wc_get_cart_url()); ?>"
                            title="<?php esc_attr_e('View your shopping cart', 'woocommerce'); ?>">
-                            <div class="flex gap-2 items-center text-gray-600 hover:text-vibrant-orange cursor-pointer transition-colors">
+                            <div class="flex gap-2 items-center text-white hover:text-vibrant-orange cursor-pointer transition-colors">
                                 <div class="relative">
                                     <span class="lg:hidden flex text-xs absolute bg-red-500 text-white rounded-full p-1 w-5 h-5 -top-2 -right-2  items-center justify-center">
                                         <?php echo WC()->cart->get_cart_contents_count(); ?>
@@ -118,7 +118,7 @@
         </div>
 
 
-        <nav id="site-navigation" class="main-navigation border border-gray-200 border-tb">
+        <nav id="site-navigation" class="main-navigation border border-gray-200 border-tb bg-gray-800">
             <div class="container">
                 <div class="main-navigation-inner">
                     <?php
@@ -142,13 +142,13 @@
                         <div class="w-6 h-5 flex flex-col justify-between items-center relative">
                             <!-- Top Bar -->
                             <span id="bar-1"
-                                  class="w-full h-0.5 bg-slate-900 rounded-full transform transition-all duration-300 origin-left"></span>
+                                  class="w-full h-0.5 bg-slate-50 rounded-full transform transition-all duration-300 origin-left"></span>
                             <!-- Middle Bar -->
                             <span id="bar-2"
-                                  class="w-full h-0.5 bg-slate-900 rounded-full transition-all duration-300"></span>
+                                  class="w-full h-0.5 bg-slate-50 rounded-full transition-all duration-300"></span>
                             <!-- Bottom Bar -->
                             <span id="bar-3"
-                                  class="w-full h-0.5 bg-slate-900 rounded-full transform transition-all duration-300 origin-left"></span>
+                                  class="w-full h-0.5 bg-slate-50 rounded-full transform transition-all duration-300 origin-left"></span>
                         </div>
                     </button>
 
@@ -166,13 +166,13 @@
             id="mobile-menu-container"
             class="fixed top-0 left-0 h-full w-80 bg-white shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out "
     >
-        <div class="p-5 flex justify-between items-center border-b border-gray-200">
+        <div class="p-5 flex justify-between items-center border-b bg-[var(--accent)] border-gray-200">
             <div class="max-w-50">
                 <?php
                 the_custom_logo();
                 ?>
             </div>
-            <button id="drawer-close" class="text-gray-500 hover:text-black text-2xl">&times;</button>
+            <button id="drawer-close" class="text-gray-50 hover:text-black text-2xl">&times;</button>
         </div>
 
         <nav id="mobile-menu" class="p-4 mobile-menu">

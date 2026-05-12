@@ -6,7 +6,7 @@
     display: block;
     width: 100%;
     text-align: center;
-    background-color: #fef2f2;
+    background-color: var(--accent-light);
     color: var(--accent);
     transition: background .15s, color .15s;
 

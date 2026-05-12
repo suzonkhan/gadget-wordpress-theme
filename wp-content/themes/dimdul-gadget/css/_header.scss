@@ -39,8 +39,9 @@ img {
 }
 
 .site-header {
-  background-color: #fff;
+  background-color: #016839;
   transition: transform 0.3s ease-in-out;
+  color: #fff;
   @media screen and (min-width: 800px) {
     position: sticky;
     top: 0;
@@ -90,9 +91,9 @@ img {
 }
 
 .main-navigation {
-  border-top: 1px solid #F5F5F5;
-  border-bottom: 1px solid #F5F5F5;
-  background-color: #fff;
+  border-top: 1px solid #00572f;
+  border-bottom: 1px solid #00572f;
+  background: #00733e;
 
   .main-navigation-inner {
     display: flex;
@@ -114,7 +115,7 @@ img {
       li {
         a {
           text-decoration: none;
-          color: #333;
+          color: #fff;
           transition: all 0.3s ease;
           display: block;
           padding: 8px;
@@ -126,7 +127,7 @@ img {
 
         &:hover, &.current-menu-item {
           a {
-            color: var(--accent);
+            color: var(--accent2-light);
           }
         }
 
