@@ -928,10 +928,10 @@ function theme_render_landing_product_summary($product)
                 </div>
             <?php endif; ?>
 
-            <div id="landing-quantity-wrap" class="<?php echo $is_variable ? 'mt-6 hidden' : 'hidden'; ?>">
-                <h3 class="text-lg font-semibold text-gray-900 mb-3"><?php esc_html_e( 'Quantity', 'dimdul-gadget' ); ?></h3>
-                <div id="landing-quantity-control-target"></div>
-            </div>
+<!--            <div id="landing-quantity-wrap" class="--><?php //echo $is_variable ? 'mt-6 hidden' : 'hidden'; ?><!--">-->
+<!--                <h3 class="text-lg font-semibold text-gray-900 mb-3">--><?php //esc_html_e( 'Quantity', 'dimdul-gadget' ); ?><!--</h3>-->
+<!--                <div id="landing-quantity-control-target"></div>-->
+<!--            </div>-->
         </div>
         <div class="text-center product-page-right-sidebar">
             <div class=""><img class="mx-auto mb-3"

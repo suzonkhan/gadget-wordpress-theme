@@ -484,6 +484,290 @@ img {
     flex-shrink: unset !important;
   }
 }
+.social-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.social-link {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #f1f1f1;
+  text-decoration: none;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.25s ease, box-shadow 0.25s ease;
+}
+.social-link .social-icon {
+  width: 22px;
+  height: 22px;
+  fill: #444444;
+  transition: fill 0.25s ease;
+  display: inline-block;
+  max-width: 100%;
+  max-height: 100%;
+}
+.social-link.facebook {
+  background-color: #1877f2;
+}
+.social-link.facebook .social-icon {
+  fill: #ffffff;
+}
+.social-link.facebook:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(24, 119, 242, 0.3);
+}
+.social-link.youtube {
+  background-color: #ff0000;
+}
+.social-link.youtube .social-icon {
+  fill: #ffffff;
+}
+.social-link.youtube:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(255, 0, 0, 0.3);
+}
+.social-link.tiktok {
+  background-color: #000000;
+}
+.social-link.tiktok .social-icon {
+  fill: #ffffff;
+}
+.social-link.tiktok:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+}
+.social-link.whatsapp {
+  background-color: #25d366;
+}
+.social-link.whatsapp .social-icon {
+  fill: #ffffff;
+}
+.social-link.whatsapp:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(37, 211, 102, 0.3);
+}
+.social-link.instagram {
+  background-color: #e1306c;
+}
+.social-link.instagram .social-icon {
+  fill: #ffffff;
+}
+.social-link.instagram:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(225, 48, 108, 0.3);
+}
+.social-link.x-twitter {
+  background-color: #111111;
+}
+.social-link.x-twitter .social-icon {
+  fill: #ffffff;
+}
+.social-link.x-twitter:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(17, 17, 17, 0.3);
+}
+.social-link:active {
+  transform: translateY(-2px);
+}
+
+.wa-widget-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+.wa-widget-container .wa-floating-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background-color: #25D366;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  position: relative;
+}
+.wa-widget-container .wa-floating-btn:hover {
+  transform: scale(1.08);
+  background-color: #23c861;
+}
+.wa-widget-container .wa-floating-btn svg {
+  width: 32px;
+  height: 32px;
+}
+.wa-widget-container .wa-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background-color: #ff3b30;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid white;
+  animation: pulse 2s infinite;
+}
+.wa-widget-container .wa-chat-window {
+  position: absolute;
+  bottom: 80px;
+  right: 0;
+  width: 360px;
+  max-width: calc(100vw - 48px);
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  display: none;
+  flex-direction: column;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.wa-widget-container .wa-chat-window.show {
+  display: flex;
+  transform: translateY(0);
+  opacity: 1;
+}
+.wa-widget-container .wa-chat-header {
+  background-color: #128C7E;
+  color: white;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.wa-widget-container .wa-chat-header .wa-avatar-container {
+  position: relative;
+  margin-right: 12px;
+}
+.wa-widget-container .wa-chat-header .wa-avatar-container .wa-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  font-size: 20px;
+}
+.wa-widget-container .wa-chat-header .wa-avatar-container .wa-online-dot {
+  width: 11px;
+  height: 11px;
+  background-color: #25D366;
+  border: 2px solid #128C7E;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+}
+.wa-widget-container .wa-chat-header .wa-header-info h4 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+.wa-widget-container .wa-chat-header .wa-header-info p {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+}
+.wa-widget-container .wa-chat-header .wa-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.wa-widget-container .wa-chat-header .wa-close-btn:hover {
+  opacity: 1;
+}
+.wa-widget-container .wa-chat-body {
+  background-color: #e5ddd5;
+  background-image: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png");
+  background-blend-mode: overlay;
+  padding: 20px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+.wa-widget-container .wa-chat-body .wa-message {
+  background: white;
+  padding: 10px 14px;
+  border-radius: 0 12px 12px 12px;
+  max-width: 85%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+.wa-widget-container .wa-chat-body .wa-message p {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: #333333;
+  line-height: 1.4;
+}
+.wa-widget-container .wa-chat-body .wa-message .wa-time {
+  font-size: 10px;
+  color: #888;
+  float: right;
+}
+.wa-widget-container .wa-chat-footer {
+  padding: 16px;
+  background: #f0f2f5;
+  display: flex;
+}
+.wa-widget-container .wa-chat-footer .wa-send-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: #25D366;
+  color: white;
+  text-decoration: none;
+  padding: 12px;
+  border-radius: 24px;
+  font-weight: 600;
+  font-size: 15px;
+  gap: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s;
+}
+.wa-widget-container .wa-chat-footer .wa-send-btn:hover {
+  background-color: #128C7E;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.7);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 8px rgba(255, 59, 48, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 59, 48, 0);
+  }
+}
 .product-card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }

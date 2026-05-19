@@ -1,0 +1,301 @@
+// 1. Color Palette Map
+$social-colors: (
+        "facebook": #1877f2,
+        "youtube": #ff0000,
+        "tiktok": #000000,
+        "whatsapp": #25d366,
+        "instagram": #e1306c,
+        "x-twitter": #111111
+);
+
+// 2. Base Reset & Structure
+.social-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+// 3. Anchor & Animation Configuration
+.social-link {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #f1f1f1; // Default background color
+  text-decoration: none;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+  background-color 0.25s ease,
+  box-shadow 0.25s ease;
+
+  // Icon settings inside the link
+  .social-icon {
+    width: 22px;
+    height: 22px;
+    fill: #444444;
+    transition: fill 0.25s ease;
+
+    // Fix for WordPress flattening viewBox to lowercase
+    display: inline-block;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  // 4. Map Loop for Dynamic Hover States
+  @each $platform, $color in $social-colors {
+    &.#{$platform} {
+      background-color: $color;
+
+      .social-icon {
+        fill: #ffffff; // Changes icon to white on hover
+      }
+
+      &:hover {
+
+        transform: translateY(-5px);
+
+        // Instagram and WhatsApp tend to look nicer with slight glow drop-shadows
+        box-shadow: 0 10px 15px rgba($color, 0.3);
+
+
+      }
+    }
+  }
+
+  // Active / Click State feel snappier
+  &:active {
+    transform: translateY(-2px);
+  }
+}
+
+// 1. Variables & Mixins
+$wa-green: #25D366;
+$wa-dark-green: #128C7E;
+$bg-light: #f0f2f5;
+$text-dark: #333333;
+$shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+$font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// 2. Main Widget Container
+.wa-widget-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  font-family: $font-stack;
+
+  // 3. Floating Action Button
+  .wa-floating-btn {
+    @include flex-center;
+    width: 60px;
+    height: 60px;
+    background-color: $wa-green;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba($wa-green, 0.4);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    position: relative;
+
+    &:hover {
+      transform: scale(1.08);
+      background-color: scale-color($wa-green, $lightness: -5%);
+    }
+
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  // 4. Notification Badge
+  .wa-badge {
+    @include flex-center;
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background-color: #ff3b30;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid white;
+    animation: pulse 2s infinite;
+  }
+
+  // 5. Chat Window Panel
+  .wa-chat-window {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 360px;
+    max-width: calc(100vw - 48px);
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: $shadow;
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+
+    &.show {
+      display: flex;
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  // 6. Header Components
+  .wa-chat-header {
+    background-color: $wa-dark-green;
+    color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .wa-avatar-container {
+      position: relative;
+      margin-right: 12px;
+
+      .wa-avatar {
+        @include flex-center;
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        font-size: 20px;
+      }
+
+      .wa-online-dot {
+        width: 11px;
+        height: 11px;
+        background-color: $wa-green;
+        border: 2px solid $wa-dark-green;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 2px;
+        right: 2px;
+      }
+    }
+
+    .wa-header-info {
+      h4 {
+        margin: 0 0 4px 0;
+        font-size: 16px;
+        font-weight: 600;
+      }
+      p {
+        margin: 0;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+
+    .wa-close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  // 7. Chat Body & Conversational UI
+  .wa-chat-body {
+    background-color: #e5ddd5;
+    background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+    background-blend-mode: overlay;
+    padding: 20px;
+    max-height: 250px;
+    overflow-y: auto;
+
+    .wa-message {
+      background: white;
+      padding: 10px 14px;
+      border-radius: 0 12px 12px 12px;
+      max-width: 85%;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
+      p {
+        margin: 0 0 4px 0;
+        font-size: 14px;
+        color: $text-dark;
+        line-height: 1.4;
+      }
+
+      .wa-time {
+        font-size: 10px;
+        color: #888;
+        float: right;
+      }
+    }
+  }
+
+  // 8. Footer & Action Elements
+  .wa-chat-footer {
+    padding: 16px;
+    background: $bg-light;
+    display: flex;
+
+    .wa-send-btn {
+      @include flex-center;
+      width: 100%;
+      background-color: $wa-green;
+      color: white;
+      text-decoration: none;
+      padding: 12px;
+      border-radius: 24px;
+      font-weight: 600;
+      font-size: 15px;
+      gap: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: $wa-dark-green;
+      }
+    }
+  }
+}
+
+// 9. Keyframe Animations
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.7);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 8px rgba(255, 59, 48, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 59, 48, 0);
+  }
+}
