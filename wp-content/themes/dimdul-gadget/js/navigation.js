@@ -207,6 +207,62 @@ jQuery(function ($) {
         adjustShippingColspan();
     });
 
+    $(document).ready(function() {
+        const $chatWindow = $('#waChatWindow');
+        const $badge = $('.wa-badge');
 
+        // Helper function to update the message timestamp to the current time
+        function setChatTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            $('#waTime').text(timeString);
+        }
+
+        // Toggle Chat Window on Floating Button Click
+        $('#waFloatingBtn').on('click', function(e) {
+            e.stopPropagation();
+
+            // Hide notification badge permanently on first click
+            if ($badge.is(':visible')) {
+                $badge.fadeOut(200);
+            }
+
+            if ($chatWindow.hasClass('show')) {
+                closeWidget();
+            } else {
+                setChatTime();
+                $chatWindow.css('display', 'flex');
+                // Timeout ensures display: flex is rendered before CSS transition triggers
+                setTimeout(() => {
+                    $chatWindow.addClass('show');
+                }, 10);
+            }
+        });
+
+        // Close Chat Window on Close Button Click
+        $('#waCloseBtn').on('click', function(e) {
+            e.stopPropagation();
+            closeWidget();
+        });
+
+        // Close widget when clicking anywhere outside of the container
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.wa-widget-container').length) {
+                if ($chatWindow.hasClass('show')) {
+                    closeWidget();
+                }
+            }
+        });
+
+        function closeWidget() {
+            $chatWindow.removeClass('show');
+            // Wait for CSS transition (300ms) before changing display back to none
+            setTimeout(() => {
+                if (!$chatWindow.hasClass('show')) {
+                    $chatWindow.css('display', 'none');
+                }
+            }, 300);
+        }
+    });
 
 });
