@@ -105,9 +105,7 @@ while (have_posts()) : ?>
 
             </div>
             <div class="text-center product-page-right-sidebar">
-                <div class=""><img class="mx-auto mb-3"
-                                   src="<?php echo get_template_directory_uri(); ?>/images/brand.png"
-                                   alt="Brand Logo"></div>
+                <?php dimdul_gadget_render_product_brand($product); ?>
                 <div class=""><img class="mx-auto mb-3"
                                    src="<?php echo get_template_directory_uri(); ?>/images/free-shipping.png"
                                    alt="Brand Logo"></div>

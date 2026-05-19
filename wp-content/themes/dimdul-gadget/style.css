@@ -1077,6 +1077,9 @@ img {
     font-size: 14px;
   }
 }
+.product-cta-box > div.product-cta-button .order-by-whatsapp {
+  padding: 14px 10px !important;
+}
 @media screen and (max-width: 600px) {
   .product-cta-box > div .product-cta-price {
     font-size: 12px;

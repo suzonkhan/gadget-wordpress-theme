@@ -73,6 +73,60 @@ function dimdul_gadget_woocommerce_scripts()
 
 add_action('wp_enqueue_scripts', 'dimdul_gadget_woocommerce_scripts');
 
+function dimdul_gadget_get_product_brand($product = null)
+{
+    if (!taxonomy_exists('product_brand')) {
+        return null;
+    }
+
+    if (!$product instanceof WC_Product) {
+        $product = wc_get_product($product ?: get_the_ID());
+    }
+
+    if (!$product instanceof WC_Product) {
+        return null;
+    }
+
+    $brands = get_the_terms($product->get_id(), 'product_brand');
+
+    if (empty($brands) || is_wp_error($brands)) {
+        return null;
+    }
+
+    return reset($brands);
+}
+
+function dimdul_gadget_render_product_brand($product = null)
+{
+    $brand = dimdul_gadget_get_product_brand($product);
+
+    if (!$brand) {
+        return;
+    }
+
+    $thumbnail_id = (int) get_term_meta($brand->term_id, 'thumbnail_id', true);
+    ?>
+    <div class="product-brand">
+        <?php if ($thumbnail_id) : ?>
+            <?php
+            echo wp_kses_post(
+                    wp_get_attachment_image(
+                            $thumbnail_id,
+                            'woocommerce_thumbnail',
+                            false,
+                            array(
+                                    'class' => 'mx-auto mb-3',
+                                    'alt' => sprintf(esc_attr__('%s Logo', 'dimdul-gadget'), $brand->name),
+                            )
+                    )
+            );
+            ?>
+        <?php endif; ?>
+        <div class="product-brand-name"><?php echo esc_html($brand->name); ?></div>
+    </div>
+    <?php
+}
+
 /**
  * Disable the default WooCommerce stylesheet.
  *
@@ -934,9 +988,7 @@ function theme_render_landing_product_summary($product)
 <!--            </div>-->
         </div>
         <div class="text-center product-page-right-sidebar">
-            <div class=""><img class="mx-auto mb-3"
-                               src="<?php echo get_template_directory_uri(); ?>/images/brand.png"
-                               alt="Brand Logo"></div>
+            <?php dimdul_gadget_render_product_brand($product); ?>
             <div class=""><img class="mx-auto mb-3"
                                src="<?php echo get_template_directory_uri(); ?>/images/free-shipping.png"
                                alt="Brand Logo"></div>
@@ -1477,3 +1529,50 @@ function theme_ajax_landing_get_checkout_html()
 
 add_action('wp_ajax_landing_get_checkout_html', 'theme_ajax_landing_get_checkout_html');
 add_action('wp_ajax_nopriv_landing_get_checkout_html', 'theme_ajax_landing_get_checkout_html');
+
+
+add_action('woocommerce_after_add_to_cart_button', 'gp_add_whatsapp_order_button', 10);
+
+function gp_add_whatsapp_order_button() {
+    global $product;
+
+    if ( ! $product ) {
+        return;
+    }
+
+    // 1. Configuration Settings
+    $phone_number = '8801817888348'; // Your business number with country code (no spaces/plus)
+    $store_name   = get_bloginfo('name') || 'Manager';
+
+    // 2. Fetch Dynamic Product Data
+    $product_name = $product->get_name();
+    $product_url  = get_permalink($product->get_id());
+    $product_price = strip_tags(wc_price($product->get_price()));
+
+    // 3. Construct clean, human-readable message template
+    $message_text = "Hello " . $store_name . ",\n\n";
+    $message_text .= "I would like to order this product:\n";
+    $message_text .= "📦 *Product:* " . $product_name . "\n";
+    $message_text .= "💰 *Price:* " . $product_price . "\n";
+    $message_text .= "🔗 *Link:* " . $product_url . "\n\n";
+    $message_text .= "Please let me know the delivery fee.";
+
+    // 4. URL safe encoding
+    $encoded_message = rawurlencode($message_text);
+    $whatsapp_url    = "https://wa.me/" . $phone_number . "?text=" . $encoded_message;
+
+    // 5. Output Button Element (Styled cleanly with Tailwind utility classes)
+    ?>
+    <a href="<?php echo esc_url($whatsapp_url); ?>"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="inline-flex items-center justify-center gap-2 px-6 py-2 mt-3 w-full font-sans text-sm font-semibold tracking-wide text-white bg-[#25D366] rounded-sm shadow-md transition-all duration-200 hover:bg-[#20ba59] hover:shadow-lg hover:-translate-y-0.5 sm:w-auto sm:ml-3 sm:mt-0 order-by-whatsapp">
+
+        <!-- Minimal WhatsApp SVG Icon -->
+<!--        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 448 512" class="w-4 h-4">-->
+<!--            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>-->
+<!--        </svg>-->
+        Order via WhatsApp
+    </a>
+    <?php
+}

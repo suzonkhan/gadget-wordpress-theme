@@ -272,6 +272,10 @@
           font-size: 14px;
         }
       }
+
+      .order-by-whatsapp {
+        padding: 14px 10px  !important;
+      }
     }
 
     .product-cta-price {
@@ -311,7 +315,6 @@ body.woocommerce-checkout {
     }
   }
 }
-
 
 
 @media screen and (max-width: 600px) {
